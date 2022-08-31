@@ -1,3 +1,8 @@
+### Disclaimer ###
+I DO NOT PLAY WOW ANY LONGER AND HAVE NOT LOOKED AT THIS CODE IN ALMOST A DECADE.  However, it was popular at the time and I offer it here for anyone to take over assuming you cannot get the code for it from CurseForge or WoWInterface.  This code may also not be the latest version because I vaguely remember handing the reigns off to someone that wanted to continue maintaining it until the game update that scaled dot damage came out.
+
+Kressilac
+
 # ShadowPriestDotTimers
 Public upload of the Classic WoW addon I created during Wrath of the Lich King and Cataclysm
 
