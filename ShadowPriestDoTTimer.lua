@@ -536,16 +536,16 @@ local function SLASH_SHADOWPRIESTDOTTIMERhandler(msg, editbox)
 		ClearMobList();
 	elseif  msg == 'clear' then
 		ClearMobList();
-	elseif  msg == 'noconfigmode' then	
+	elseif  msg == 'lock' then	
 		ShadowPriestDoTTimerFrame:EnableMouse(false);
 		ShadowPriestDoTTimerFrame:SetBackdrop(nil);
 		SetCooldownOffsets();
 		STmode = 1
-	elseif  msg == 'configmode' then
+	elseif  msg == 'move' then
 		ShadowPriestDoTTimerFrame:EnableMouse(true);
 		ShadowPriestDoTTimerFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile= "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 4, tile = false, tileSize =16, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
 		STmode = 2
-	elseif  msg == 'options' then
+	elseif  msg == 'options' or msg =='' then
 		InterfaceOptionsFrame_OpenToCategory("Shadow Priest DoT Timer Classic");
 	elseif  msg == 'scale1' then
 		ShadowPriestDoTTimerScaleFrame = 0.5
@@ -565,8 +565,11 @@ local function SLASH_SHADOWPRIESTDOTTIMERhandler(msg, editbox)
 	elseif  msg == 'scale6' then
 		ShadowPriestDoTTimerScaleFrame = 1.0
 		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerScaleFrame);
+	elseif  msg == 'help' then
+		print("Syntax: /spdt (show | hide | reset | move | lock | options | clearmoblist )");
+		print("Syntax: /spdt (scale1 | scale2 | scale3 | scale4 | scale5 | scale6)");
 	else
-		print("Syntax: /spdt (show | hide | reset | configmode | noconfigmode | options | clearmoblist )");
+		print("Syntax: /spdt (show | hide | reset | move | lock | options | clearmoblist )");
 		print("Syntax: /spdt (scale1 | scale2 | scale3 | scale4 | scale5 | scale6)");
 	end
 end

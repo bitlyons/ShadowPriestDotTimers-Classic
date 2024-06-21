@@ -16,12 +16,16 @@ local defaultcooldownoffset = 0;
 
 local defaultbufftable = {}
 
-table.insert(defaultbufftable, {"Volcanic Destruction", "Int", 1600, 1});
+table.insert(defaultbufftable, {"Volcanic Destruction", "Int", 1600, 1}); 	--DMC: volcano
 table.insert(defaultbufftable, {"Fiery Quintessence", "Int", 1149, 1});
 table.insert(defaultbufftable, {"Velocity", "Haste", 3278, 1});
 table.insert(defaultbufftable, {"Soul Fragment", "Mastery", 39, 10});
 table.insert(defaultbufftable, {"Combat Mind", "Int", 88, 10});
-table.insert(defaultbufftable, {"Witching Hour","Haste",1710 ,1});
+table.insert(defaultbufftable, {"Soul Power","spellpower",1926 ,1});  		--Soul Casket
+table.insert(defaultbufftable, {"Witching Hour","Haste",1710 ,1});  		--Witching Hourglass
+table.insert(defaultbufftable, {"Jeweled Serpent","spellpower",1425 ,1}); 	--Figurine - Jeweled Serpent
+table.insert(defaultbufftable, {"Leviathan","spellpower",1425 ,1}); 		--Sea Star
+
 
 local defaultclbufftable = {}
 
