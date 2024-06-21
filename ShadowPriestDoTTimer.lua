@@ -58,24 +58,24 @@ function ShadowPriestDoTTimerFrame_OnLoad(self)
 	ShadowPriestDoTTimerFrame:RegisterEvent("PLAYER_REGEN_DISABLED");
 
 	DEFAULT_CHAT_FRAME:AddMessage("--- SPDT Classic Loaded ---");
-	Texture1:SetTexture(IconVT);
-	Texture2:SetTexture(IconPlague);
-	Texture3:SetTexture(IconWordPain);
-	Texture5:SetTexture(IconMindBlast);
-	Texture6:SetTexture(IconShadowOrbs);
-	Texture7:SetTexture(IconDarkEvan);
-	Texture8:SetTexture(IconArchangel);
+	SPDT_SWP_Texture:SetTexture(IconWordPain);
+	SPDT_DP_Texture:SetTexture(IconPlague);
+	SPDT_VT_Texture:SetTexture(IconVT);
+	SPDT_MB_Texture:SetTexture(IconMindBlast);
+	SPDT_ORB_Texture:SetTexture(IconShadowOrbs);
+	SPDT_DE_Texture:SetTexture(IconDarkEvan);
+	SPDT_Archangel_Texture:SetTexture(IconArchangel);
 	
-	Texture1:Hide();
-	Texture2:Hide();
-	Texture3:Hide();
+	SPDT_VT_Texture:Hide();
+	SPDT_DP_Texture:Hide();
+	SPDT_SWP_Texture:Hide();
 	Texture4:Hide();
 	TEXT4:Show();
 	TEXT5:Hide();
-	Texture5:Hide();
-	Texture6:Hide();
-	Texture7:Hide();
-	Texture8:Hide();
+	SPDT_MB_Texture:Hide();
+	SPDT_ORB_Texture:Hide();
+	SPDT_DE_Texture:Hide();
+	SPDT_Archangel_Texture:Hide();
 	TEXT1Above:Show();
 	TEXT2Above:Show();
 	
@@ -275,15 +275,15 @@ function CheckCurrentTargetDeBuffs()
 	end
 
 	if VTFound == 1 then
-		Texture1:Show()
+		SPDT_VT_Texture:Show()
 		if  VTleftMS < VTlasttickTime then
 			if VTleftMS < VTlasttickcastTime then
-				Texture1:SetVertexColor(0.1, 0.6, 0.1);
+				SPDT_VT_Texture:SetVertexColor(0.1, 0.6, 0.1);
 			else 
-				Texture1:SetVertexColor(0.9, 0.2, 0.2);
+				SPDT_VT_Texture:SetVertexColor(0.9, 0.2, 0.2);
 			end
 		else
-			Texture1:SetVertexColor(1.0, 1.0, 1.0);
+			SPDT_VT_Texture:SetVertexColor(1.0, 1.0, 1.0);
 		end
 		TEXT1Above:Show();
 
@@ -297,19 +297,19 @@ function CheckCurrentTargetDeBuffs()
 	else
 		TEXT1Above:Hide();
 		TEXT1:Hide();
-		Texture1:Hide();
+		SPDT_VT_Texture:Hide();
 	end
 
 	if PlagueFound == 1 then
-		Texture2:Show();
+		SPDT_DP_Texture:Show();
 		if  PlagueleftMS < PlaguelasttickTime then
 			if PlagueleftMS < PlaguelasttickCastTime  then
-				Texture2:SetVertexColor(0.1, 0.6, 0.1);
+				SPDT_DP_Texture:SetVertexColor(0.1, 0.6, 0.1);
 			else 
-				Texture2:SetVertexColor(0.9, 0.2, 0.2);
+				SPDT_DP_Texture:SetVertexColor(0.9, 0.2, 0.2);
 			end
 		else
-			Texture2:SetVertexColor(1.0, 1.0, 1.0);
+			SPDT_DP_Texture:SetVertexColor(1.0, 1.0, 1.0);
 		end
 		TEXT2Above:Show();
 
@@ -322,16 +322,16 @@ function CheckCurrentTargetDeBuffs()
 		TEXT2:Show();	
 	else
 		TEXT2Above:Hide();
-		Texture2:Hide();
+		SPDT_DP_Texture:Hide();
 		TEXT2:Hide();
 	end
 
 	if WordPainFound == 1 then
-		Texture3:Show();
+		SPDT_SWP_Texture:Show();
 		TEXT3:SetText(WordPainLeft);
 		TEXT3:Show();
 	else
-		Texture3:Hide();
+		SPDT_SWP_Texture:Hide();
 		TEXT3:Hide();
 	end
 
@@ -416,6 +416,39 @@ function CheckPlayerBuffs()
 
 				i = i + 1;
 			end
+			------------------------------------------
+			-- loop class buffs list untill we find a match.
+			found1 = false;
+			j = 1;
+			while found1 == false and j <= #ClassBuffList do
+				local entry1 = ClassBuffList[j];
+				if (entry1) then
+					if (bspellId == entry1[1]) then
+						found1 = true;
+
+						if (bcount <= 0) then
+							bcount = entry1[4];
+						end
+
+						if (string.lower(entry1[2]) == "int") then
+							buffscorecurrent = buffscorecurrent + (entry1[3] * bcount);
+						elseif (string.lower(entry1[2]) == "mastery") then
+							buffscorecurrent = buffscorecurrent + (entry1[3] * bcount * MasteryWeight);
+						elseif (string.lower(entry1[2]) == "crit") then
+							buffscorecurrent = buffscorecurrent + (entry1[3] * bcount * CritWeight);
+						elseif (string.lower(entry1[2]) == "haste") then
+							buffscorecurrent = buffscorecurrent + (entry1[3] * bcount * HasteWeight);
+						elseif (string.lower(entry1[2]) == "damage") then
+							buffscorecurrent = buffscorecurrent + (entry1[3] * bcount * modifiedint * DamageWeight);
+						elseif (string.lower(entry1[2]) == "spellpower") then
+							buffscorecurrent = buffscorecurrent + (entry1[3] * bcount * SpellpowerWeight);
+						end
+					end
+				end
+
+				j = j + 1;
+			end		
+
 		end
 	end
 	
@@ -424,15 +457,15 @@ function CheckPlayerBuffs()
 	if (HideMB == 0 and MBstart > 0 and MBduration > 1.5) then
 		TEXT5:SetText(string.format("%1.1f", MBLeft));
 		TEXT5:Show();
-		Texture5:Show();
+		SPDT_MB_Texture:Show();
 	else
 		TEXT5:Hide();
-		Texture5:Hide();
+		SPDT_MB_Texture:Hide();
 	end
 
 	if (ShadowOrbsFound == 1 and HideOrbs == 0) then
-		Texture6:SetTexture(IconShadowOrbs);
-		Texture6:Show();
+		SPDT_ORB_Texture:SetTexture(IconShadowOrbs);
+		SPDT_ORB_Texture:Show();
 		TEXT6Above:SetText(ShadowOrbsStacks);
 		TEXT6Above:Show();	
 		
@@ -445,44 +478,44 @@ function CheckPlayerBuffs()
 
 		if ShadowOrbsStacks == 3 then
 			if  (MBLeft <= PseudoGCD and MBstart > 0 and MBduration > 1.5) then
-				Texture6:SetVertexColor(0.1, 0.6, 0.1);		--green
+				SPDT_ORB_Texture:SetVertexColor(0.1, 0.6, 0.1);		--green
 			elseif (MBLeft <= PseudoGCDWarn and MBstart > 0 and MBduration > 1.5) then
-				Texture6:SetVertexColor(0.9, 0.2, 0.2);		--red
+				SPDT_ORB_Texture:SetVertexColor(0.9, 0.2, 0.2);		--red
 			end
 		else								-- not 3 orbs
-			Texture6:SetVertexColor(1.0, 1.0, 1.0);		--no colour
+			SPDT_ORB_Texture:SetVertexColor(1.0, 1.0, 1.0);		--no colour
 		end
 	elseif (EmpShadowFound == 1 and HideES == 0) then
-		Texture6:SetVertexColor(1.0, 1.0, 1.0);		--no colour
+		SPDT_ORB_Texture:SetVertexColor(1.0, 1.0, 1.0);		--no colour
 		TEXT6Above:Hide();
-		Texture6:SetTexture(IconEmpShadow);
-		Texture6:Show();
+		SPDT_ORB_Texture:SetTexture(IconEmpShadow);
+		SPDT_ORB_Texture:Show();
 		TEXT6:SetText(EmpShadowLeft);
 		TEXT6:Show();	
 	else
-		Texture6:Hide();
+		SPDT_ORB_Texture:Hide();
 		TEXT6:Hide();	
 		TEXT6Above:Hide();
 	end
 	
 	if (DarkEvanFound == 1 and HideEvangelism == 0) then
-		Texture7:Show();
+		SPDT_DE_Texture:Show();
 		TEXT7:SetText(DarkEvanLeft);
 		TEXT7Above:SetText(DarkEvanStacks);
 		TEXT7:Show();
 		TEXT7Above:Show();
 	else
-		Texture7:Hide();
+		SPDT_DE_Texture:Hide();
 		TEXT7:Hide();
 		TEXT7Above:Hide();
 	end
 
 	if (AAFound == 1 and HideAA == 0) then
-		Texture8:Show();
+		SPDT_Archangel_Texture:Show();
 		TEXT8:SetText(AALeft);
 		TEXT8:Show();	
 	else
-		Texture8:Hide();
+		SPDT_Archangel_Texture:Hide();
 		TEXT8:Hide();
 	end
 

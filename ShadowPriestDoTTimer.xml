@@ -11,7 +11,7 @@
 		</Anchors>
 		<Layers>
 			<Layer>
-				<Texture name="Texture8">
+				<Texture name="SPDT_Archangel_Texture">
 					<Size x="39" y="39" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
@@ -19,7 +19,7 @@
 						</Anchor>
 					</Anchors>
 				</Texture>
-				<Texture name="Texture7">
+				<Texture name="SPDT_DE_Texture">
 					<Size x="39" y="39" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
@@ -27,7 +27,7 @@
 						</Anchor>
 					</Anchors>
 				</Texture>
-				<Texture name="Texture6">
+				<Texture name="SPDT_ORB_Texture">
 					<Size x="39" y="39" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
@@ -35,7 +35,7 @@
 						</Anchor>
 					</Anchors>
 				</Texture>
-				<Texture name="Texture5">
+				<Texture name="SPDT_MB_Texture">
 					<Size x="39" y="39" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
@@ -51,15 +51,16 @@
 						</Anchor>
 					</Anchors>
 				</Texture>
-				<Texture name="Texture3">
+				<Texture name="SPDT_VT_Texture">
 					<Size x="39" y="39" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
+							
 							<Offset x="80" y="-1" />
 						</Anchor>
 					</Anchors>
 				</Texture>
-				<Texture name="Texture2">
+				<Texture name="SPDT_DP_Texture">
 					<Size x="39" y="39" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
@@ -67,7 +68,7 @@
 						</Anchor>
 					</Anchors>
 				</Texture>
-				<Texture name="Texture1">
+				<Texture name="SPDT_SWP_Texture">
 					<Size x="39" y="39" />
 					<Anchors>
 						<Anchor point="TOPLEFT">
@@ -75,11 +76,12 @@
 						</Anchor>
 					</Anchors>
 				</Texture>
+				
 			</Layer>
 			<Layer level="OVERLAY">
 				<FontString name="TEXT1" inherits="GameFontNormal" text="Icon1">
 					<Anchors>
-						<Anchor point="CENTER" relativeTo="Texture1" relativePoint="CENTER">
+						<Anchor point="CENTER" relativeTo="SPDT_VT_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
 						</Anchor>
 					</Anchors>
@@ -88,7 +90,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT1Above" inherits="GameFontNormal" text="0">
 					<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="Texture1" relativePoint="TOPLEFT">
+					<Anchor point="TOPLEFT" relativeTo="SPDT_VT_Texture" relativePoint="TOPLEFT">
 						<Offset x="0" y="15" />
 					</Anchor>
 					</Anchors>
@@ -97,7 +99,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT2" inherits="GameFontNormal" text="Icon2">
 					<Anchors>
-						<Anchor point="CENTER" relativeTo="Texture2" relativePoint="CENTER">
+						<Anchor point="CENTER" relativeTo="SPDT_DP_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
 						</Anchor>
 					</Anchors>
@@ -106,7 +108,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT2Above" inherits="GameFontNormal" text="0">
 					<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="Texture2" relativePoint="TOPLEFT">
+					<Anchor point="TOPLEFT" relativeTo="SPDT_DP_Texture" relativePoint="TOPLEFT">
 						<Offset x="0" y="15" />
 					</Anchor>
 					</Anchors>
@@ -115,7 +117,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT3" inherits="GameFontNormal" text="Icon3">
 					<Anchors>
-						<Anchor point="CENTER" relativeTo="Texture3" relativePoint="CENTER">
+						<Anchor point="CENTER" relativeTo="SPDT_SWP_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
 						</Anchor>
 					</Anchors>
@@ -133,7 +135,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT5" inherits="GameFontNormal" text="Icon5">
 					<Anchors>
-						<Anchor point="CENTER" relativeTo="Texture5" relativePoint="CENTER">
+						<Anchor point="CENTER" relativeTo="SPDT_MB_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
 						</Anchor>
 					</Anchors>
@@ -142,7 +144,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT6" inherits="GameFontNormal" text="Icon6">
 					<Anchors>
-						<Anchor point="CENTER" relativeTo="Texture6" relativePoint="CENTER">
+						<Anchor point="CENTER" relativeTo="SPDT_ORB_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
 						</Anchor>
 					</Anchors>
@@ -151,7 +153,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT6Above" inherits="GameFontNormal" text="0">
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="Texture6" relativePoint="TOPLEFT">
+						<Anchor point="TOPLEFT" relativeTo="SPDT_ORB_Texture" relativePoint="TOPLEFT">
 							<Offset x="0" y="15" />
 						</Anchor>
 					</Anchors>
@@ -160,7 +162,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT7" inherits="GameFontNormal" text="Icon7">
 					<Anchors>
-						<Anchor point="CENTER" relativeTo="Texture7" relativePoint="CENTER">
+						<Anchor point="CENTER" relativeTo="SPDT_DE_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
 						</Anchor>
 					</Anchors>
@@ -169,7 +171,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT7Above" inherits="GameFontNormal" text="0">
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="Texture7" relativePoint="TOPLEFT">
+						<Anchor point="TOPLEFT" relativeTo="SPDT_DE_Texture" relativePoint="TOPLEFT">
 							<Offset x="0" y="15" />
 						</Anchor>
 					</Anchors>
@@ -178,7 +180,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TEXT8" inherits="GameFontNormal" text="Icon8">
 					<Anchors>
-						<Anchor point="CENTER" relativeTo="Texture8" relativePoint="CENTER">
+						<Anchor point="CENTER" relativeTo="SPDT_Archangel_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
 						</Anchor>
 					</Anchors>

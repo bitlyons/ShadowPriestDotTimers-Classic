@@ -1,5 +1,5 @@
-﻿-- Author      : derek
--- Create Date : 10/6/2011 7:35:21 PM
+﻿-- Author      : Kressilac /Duskwood - Bathral@BlackhandEU  - Lyonzy@GehennasEU
+-- Create Date : 21/6/2024 
 
 local defaultdamageweight = .01
 local defaultmasteryweight = .48
@@ -16,18 +16,44 @@ local defaultcooldownoffset = 0;
 
 local defaultbufftable = {}
 
-table.insert(defaultbufftable, {"Dark Evangelism", "Damage", 2, 5});
-table.insert(defaultbufftable, {"Empowered Shadow", "Damage", 10, 1});
-table.insert(defaultbufftable, {"Volcanic Power", "Int", 1200, 1});
-table.insert(defaultbufftable, {"Heroism", "Haste", 3840, 1});
-table.insert(defaultbufftable, {"Power Torrent", "Int", 500, 1});
-table.insert(defaultbufftable, {"Time Warp", "Haste", 3840, 1});
-table.insert(defaultbufftable, {"Ancient Hysteria", "Haste", 3840, 1});
 table.insert(defaultbufftable, {"Volcanic Destruction", "Int", 1600, 1});
 table.insert(defaultbufftable, {"Fiery Quintessence", "Int", 1149, 1});
 table.insert(defaultbufftable, {"Velocity", "Haste", 3278, 1});
 table.insert(defaultbufftable, {"Soul Fragment", "Mastery", 39, 10});
 table.insert(defaultbufftable, {"Combat Mind", "Int", 88, 10});
+table.insert(defaultbufftable, {"Witching Hour","Haste",1710 ,1});
+
+local defaultclbufftable = {}
+
+--class abilities
+table.insert(defaultclbufftable, {32182, "Haste", 30, 1});      -- Heroism
+table.insert(defaultclbufftable, {2825, "Haste", 30, 1});       -- Bloodlust
+table.insert(defaultclbufftable, {80353, "Haste", 30, 1});      -- Time Warp
+table.insert(defaultclbufftable, {90355, "Haste", 30, 1});      -- Primal Rage
+table.insert(defaultclbufftable, {57934, "Damage", 15, 1});		-- Tricks of the Trade (Rogue)
+
+--race abilities
+table.insert(defaultclbufftable, {26297, "Haste", 20, 1});      -- Berserking
+
+--profession abilities
+table.insert(defaultclbufftable, {96230, "Int", 480 , 1});      -- Synapse Spring
+table.insert(defaultclbufftable, {74497, "Haste", 480, 1});     -- Lifeblood
+table.insert(defaultclbufftable, {55642, "Int", 295 , 1});      -- Lightweave Embroidery
+table.insert(defaultclbufftable, {75172, "Int", 580, 1});       -- Lightweave Embroidery
+
+--manufactured items
+table.insert(defaultclbufftable, {58091, "Int", 1200, 1});      -- Volcanic Potion
+
+--weapon enchants
+table.insert(defaultclbufftable, {74242, "Int", 500, 1}); 		-- Power Torrent
+table.insert(defaultclbufftable, {74221, "Int", 1650, 1});      -- Hurricane
+
+--priest abilities
+table.insert(defaultclbufftable, {10060, "Haste", 20, 1});      -- Power Infusion Buff Haste Part
+table.insert(defaultclbufftable, {87118, "Damage", 2, 5}); 		-- Dark Evangelism
+table.insert(defaultclbufftable, {95799, "Damage", 10, 1}); 	--Empowered Shadow
+
+
 
 function CancelButton_OnClick()
 end
@@ -135,6 +161,8 @@ function OptionsFrame_OnEvent(self, event, ...)
 			BuffList = defaultbufftable;
 			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default BuffList Loaded...");
 		end
+
+			ClassBuffList = defaultclbufftable;	--load the class list
 		
 		if(not HideAA) then
 			HideAA = defaulthideaa;
