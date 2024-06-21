@@ -1,6 +1,6 @@
-## Author: Kressilac @Duskwood
-## Interface: 40300
-## Notes: Updated for 4.3
+## Author: Kressilac @Duskwood, Lyonzy
+## Interface: 40400
+## Notes: updated to work on Classic Cata
 ## SavedVariables: HasteWeight, CritWeight, MasteryWeight, DamageWeight, SpellpowerWeight, ShadowPriestDoTTimerxPosiFrame, ShadowPriestDoTTimerFrameScaleFrame, HideEvangelism, HideOrbs, HideAA, HideES, BuffList, HideMB, CooldownOffset
 ## Title: Shadow Priest DoT Timer
 ## Version: 1.1

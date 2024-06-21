@@ -1,6 +1,6 @@
 ﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="ShadowPriestDoTTimer.lua" />
-	<Frame name="ShadowPriestDoTTimerFrame" setAllPoints="true" alpha="10" toplevel="true" movable="true" frameStrata="BACKGROUND" protected="true">
+	<Frame name="ShadowPriestDoTTimerFrame" setAllPoints="true" alpha="10" toplevel="true" movable="true" frameStrata="BACKGROUND" protected="true" inherits="BackdropTemplate">
 		<Size>
 			<AbsDimension x="320" y="40" />
 		</Size>
@@ -207,9 +207,9 @@
 				end
 			</OnMouseUp>
 			<OnHide>
-				if ( this.isMoving ) then
-				this:StopMovingOrSizing();
-				this.isMoving = false;
+				if ( self.isMoving ) then
+				self:StopMovingOrSizing();
+				self.isMoving = false;
 				end
 			</OnHide>
 		</Scripts>

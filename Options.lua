@@ -107,23 +107,55 @@ end
 
 function OptionsFrame_OnEvent(self, event, ...)
 	local arg1 = ...;
-	if (event == "ADDON_LOADED" and arg1 == "ShadowPriestDoTTimer") then
-		if (not HasteWeight or not CritWeight or not MasteryWeight or not DamageWeight or not SpellpowerWeight or not BuffList
-				or not HideAA or not HideES or not HideEvangelism or not HideOrbs or not HideMB or not CooldownOffset) then
+	
+	if (event == "ADDON_LOADED"  and arg1 == "ShadowPriestDotTimer") then
+	
+		if(not HasteWeight) then
 			HasteWeight = defaulthasteweight;
-			CritWeight = defaultcritweight;
-			MasteryWeight = defaultmasteryweight;
-			DamageWeight = defaultdamageweight;
-			SpellpowerWeight = defaultspellpowerweight;
-			BuffList = defaultbufftable;
-			HideEvangelism = defaulthideevangelism;
-			HideOrbs = defaulthideorbs;
-			HideAA = defaulthideaa;
-			HideES = defaulthidees;
-			HideMB = defaulthidemb;
-			CooldownOffset = defaultcooldownoffset;
-			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default Stat Weights Loaded...");
+			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default HasteWeight Loaded...");
 		end
+		
+		if(not CritWeight) then
+			CritWeight = defaultcritweight;
+			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default CritWeight Loaded...");
+		end
+		if(not MasteryWeight) then
+			MasteryWeight = defaultmasteryweight;
+			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default MasteryWeight Loaded...");
+		end
+		if(not DamageWeight) then
+			DamageWeight = defaultdamageweight;
+			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default DamageWeight Loaded...");
+		end
+		if(not SpellpowerWeight) then
+			SpellpowerWeight = defaultspellpowerweight;
+			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default SpellpowerWeight Loaded...");
+		end
+		if(not BuffList) then
+			BuffList = defaultbufftable;
+			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default BuffList Loaded...");
+		end
+		
+		if(not HideAA) then
+			HideAA = defaulthideaa;
+		end
+		if(not HideES) then
+			HideES = defaulthidees;
+		end
+		if(not HideEvangelism) then
+			HideEvangelism = defaulthideevangelism;
+		end
+		if(not HideOrbs) then
+			HideOrbs = defaulthideorbs;
+		end
+		if(not HideMB) then
+			HideMB = defaulthidemb;
+		end
+		if(not CooldownOffset) then
+			CooldownOffset = defaultcooldownoffset;
+			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default Cooldown Offset Loaded...");
+		end
+		
 
 		EditBoxHaste:SetText(string.format("%1.2f", HasteWeight));
 		EditBoxCrit:SetText(string.format("%1.2f", CritWeight));

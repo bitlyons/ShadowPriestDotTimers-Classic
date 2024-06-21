@@ -23,7 +23,7 @@ local nameWordPain, rankWordPain, IconWordPain = GetSpellInfo(589);
 --"Interface\\ICONS\\Spell_Shadow_ShadowWordPain.blp";
 ----------------------------------------------
 local VTID = 34914
-local nameVT, rankVT, IconVT, costVT, isFunnelVT, powerTypeVT, castTimeVT, minRangeVT, maxRangeVT = GetSpellInfo(VTID)	
+local nameVT, rankVT, IconVT, castTimeVT, minRangeVT, maxRangeVT = GetSpellInfo(VTID)	
 --"Interface\\ICONS\\Spell_Holy_Stoicism.blp";
 ----------------------------------------------
 local PlagueID = 2944
@@ -78,6 +78,7 @@ function ShadowPriestDoTTimerFrame_OnLoad(self)
 	Texture8:Hide();
 	TEXT1Above:Show();
 	TEXT2Above:Show();
+	
 	TimeSinceLastUpdate = 0
 
 	ShadowPriestDoTTimerFrame:RegisterForDrag("LeftButton", "RightButton");
@@ -104,7 +105,7 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
 	local arg1 = ...;
 
 	if (event == "UNIT_SPELLCAST_SUCCEEDED") then
-		local unit, _, _, _, spellid = ...;
+		local unit, _, spellid = ...;
 		if (unit == "player") then
 			if (spellid == VTID) then
 				TEXT1Above:Show();
@@ -126,12 +127,13 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
 				end
 			end
 		end
-	elseif (event == "ADDON_LOADED" and arg1 == "ShadowPriestDoTTimer") then
+	elseif (event == "ADDON_LOADED" and arg1 == "ShadowPriestDotTimer") then
  		if (not ShadowPriestDoTTimerFrameScaleFrame) then
 			ShadowPriestDoTTimerFrameScaleFrame = 1.0
 		end
 		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerFrameScaleFrame);
 		SetCooldownOffsets();
+		
 	elseif (event == "PLAYER_LOGOUT") then
 		ShadowPriestDoTTimerFrameScaleFrame = ShadowPriestDoTTimerFrame:GetScale();
 		point, relativeTo, relativePoint, xOffset, yOffset = self:GetPoint(1);
@@ -241,7 +243,7 @@ function CheckCurrentTargetDeBuffs()
 	while not finished do
 		count = count+1
 
-		local bn,brank,bicon,bcount,bType,bduration,bexpirationTime,bisMine,bisStealable,bshouldConsolidate,bspellId =  UnitDebuff("target", count, 0)
+		local bn,bicon,bcount,bType,bduration,bexpirationTime,bisMine,bisStealable,bshouldConsolidate,bspellId =  UnitDebuff("target", count, 0)
 		if not bn then
 			finished = true
 		else
@@ -356,7 +358,7 @@ function CheckPlayerBuffs()
 
 	while not finished do
 		count = count+1;
-		local bn,brank,bicon,bcount,bType,bduration,bexpirationTime,bisMine,bisStealable,bshouldConsolidate,bspellId =  UnitBuff("player", count, 0);
+		local bn,bicon,bcount,bType,bduration,bexpirationTime,bisMine,bisStealable,bshouldConsolidate,bspellId =  UnitBuff("player", count, 0);
 
 		local modifiedint = base + buffscorecurrent;
 		
