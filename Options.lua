@@ -75,7 +75,7 @@ function OptionsFrame_OnLoad(panel)
     --
 	panel:RegisterEvent("ADDON_LOADED");
 	panel:RegisterEvent("PLAYER_LOGOUT");
-    panel.name = "Shadow Priest DoT Timer";
+    panel.name = "Shadow Priest DoT Timer Classic";
 
     -- When the player clicks okay, run this function.
     --
@@ -112,28 +112,28 @@ function OptionsFrame_OnEvent(self, event, ...)
 	
 		if(not HasteWeight) then
 			HasteWeight = defaulthasteweight;
-			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default HasteWeight Loaded...");
+			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default HasteWeight Loaded...");
 		end
 		
 		if(not CritWeight) then
 			CritWeight = defaultcritweight;
-			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default CritWeight Loaded...");
+			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default CritWeight Loaded...");
 		end
 		if(not MasteryWeight) then
 			MasteryWeight = defaultmasteryweight;
-			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default MasteryWeight Loaded...");
+			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default MasteryWeight Loaded...");
 		end
 		if(not DamageWeight) then
 			DamageWeight = defaultdamageweight;
-			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default DamageWeight Loaded...");
+			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default DamageWeight Loaded...");
 		end
 		if(not SpellpowerWeight) then
 			SpellpowerWeight = defaultspellpowerweight;
-			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default SpellpowerWeight Loaded...");
+			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default SpellpowerWeight Loaded...");
 		end
 		if(not BuffList) then
 			BuffList = defaultbufftable;
-			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default BuffList Loaded...");
+			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default BuffList Loaded...");
 		end
 		
 		if(not HideAA) then
@@ -153,7 +153,7 @@ function OptionsFrame_OnEvent(self, event, ...)
 		end
 		if(not CooldownOffset) then
 			CooldownOffset = defaultcooldownoffset;
-			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Default Cooldown Offset Loaded...");
+			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default Cooldown Offset Loaded...");
 		end
 		
 
@@ -188,7 +188,7 @@ function OptionsFrame_OnEvent(self, event, ...)
 
 		BuffListBoxUpdate();
 
-		DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Stat Weights Loaded...");
+		DEFAULT_CHAT_FRAME:AddMessage("--- SPDT Classic Stat Weights Loaded ---");
 	elseif (event == "PLAYER_LOGOUT") then
 		HasteWeight = EditBoxHaste:GetNumber();
 		CritWeight = EditBoxCrit:GetNumber();
