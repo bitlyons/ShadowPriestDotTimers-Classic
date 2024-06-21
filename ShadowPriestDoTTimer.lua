@@ -312,7 +312,7 @@ function CheckCurrentTargetDeBuffs()
 		 	--colour the current buff score based based on if its higher or lower
 			if (buffscorecurrent > (currentmob[2])) then
 				TEXT1Above:SetVertexColor(1.0, 0.1, 0.1);	--red 
-			elseif (buffscorecurrent < (currentmob[2])) then
+			elseif (buffscorecurrent < (currentmob[2]) or buffscorecurrent == (currentmob[2])) then
 				TEXT1Above:SetVertexColor(0.1, 0.6, 0.1);	--green
 			end
 		else
@@ -349,7 +349,7 @@ function CheckCurrentTargetDeBuffs()
 		if(ColorDots == true) then
 		 	if (buffscorecurrent > (currentmob[3])) then
 				TEXT2Above:SetVertexColor(1.0, 0.1, 0.1);	--red 
-			elseif (buffscorecurrent < (currentmob[3])) then
+			elseif (buffscorecurrent < (currentmob[3]) or buffscorecurrent == (currentmob[3])) then
 				TEXT2Above:SetVertexColor(0.1, 0.6, 0.1);	--green
 			end
 		else
