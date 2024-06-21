@@ -1,13 +1,13 @@
 shadow priest dot timer updated to work on cata classic. updated from 1.2b originally by Kressilac with some additional code by Bathral from later versions (mop 1.7g  and wod 1.8c) as well as my own changes
 
 # preview without dot timers coloured #
-![t2i]([assets/AddOnInAction.jpg]
+![t2i](assets/AddOnInAction.jpg)
 
 # preview with dot timers coloured #
-![t2i]([assets/AddOnInActionWithBuffColours.jpg]
+![t2i](assets/AddOnInActionWithBuffColours.jpg)
 
 # options #
-![t2i]([assets/OptionsScreen.PNG]
+![options](assets/OptionsScreen.PNG)
 -------------
 
 # ShadowPriestDotTimers
