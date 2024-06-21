@@ -1,5 +1,5 @@
 ﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="ShadowPriestDoTTimer.lua" />
+	<Script file="ShadowPriestDotTimer.lua" />
 	<Frame name="ShadowPriestDoTTimerFrame" setAllPoints="true" alpha="10" toplevel="true" movable="true" frameStrata="BACKGROUND" protected="true" inherits="BackdropTemplate">
 		<Size>
 			<AbsDimension x="320" y="40" />
@@ -215,5 +215,37 @@
 				end
 			</OnHide>
 		</Scripts>
+	</Frame>
+	<Frame name="SPDT_POPUP" inherits="BackdropTemplate"  alpha="10"  movable="true" frameStrata="TOOLTIP" >
+		<Size x="341" y="97" />
+		<Anchors>
+			<Anchor point="TOP" />
+		</Anchors>
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="BACKDROP_DIALOG_32_32" keyType="string" type="global" />
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="SPDT_Move" inherits="GameFontNormal" text="Press Lock to stop moving SPDT">
+					<Size x="280" y="40" />
+					<Anchors>
+						<Anchor x="29" y="-16" point="TOPLEFT" />
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button inherits="UIPanelButtonTemplate" text="Lock">
+				<Size x="75" y="23" />
+				<Anchors>
+					<Anchor x="-3" y="22" point="BOTTOM" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						lockSPDT()
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
 	</Frame>
 </Ui>

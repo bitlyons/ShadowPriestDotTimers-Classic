@@ -1,4 +1,4 @@
-﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+﻿<Ui xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="Options.lua" />
 	<Button name="BuffListHeader" virtual="true">
 		<NormalTexture name="$parentBG">
@@ -75,12 +75,12 @@
 			</OnLeave>
 		</Scripts>
 		<NormalTexture name="$parentBG">
-			<Color r="0.75" g="0" b="0" a="0.5" />
+			<Color r="0.75" a="0.5" />
 		</NormalTexture>
 	</Button>
 	<Frame name="OptionsFrame" parent="UIParent" toplevel="true" movable="true" enableMouse="true" enableKeyboard="true">
 		<Size>
-			<AbsDimension x="597" y="572" />
+			<AbsDimension x="672" y="572" />
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT">
@@ -575,6 +575,29 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+			<CheckButton name="CheckButtonColorDots" inherits="UICheckButtonTemplate" text="Dot Colour">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset x="485" y="-195" />
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString name="$parentText" inherits="GameFontNormalSmall" text="Colour Dots" justifyH="LEFT">
+							<Size>
+								<AbsDimension x="160" y="20" />
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+									<Offset>
+										<AbsDimension x="-2" y="0" />
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</CheckButton>
 		</Frames>
 		<Scripts>
 			<OnLoad>

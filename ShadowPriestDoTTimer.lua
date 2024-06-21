@@ -12,6 +12,7 @@ MyAddon_UpdateInterval = 0.05; -- How often the OnUpdate code will run (in secon
 WarningTime = 600; -- WarningTime (in milliseconds)
 local buffscorecurrent = 0
 
+
 --Used to keep track of the DoTs on a Mob.
 local moblist = {}
 local isincombat = false;
@@ -131,6 +132,7 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
  		if (not ShadowPriestDoTTimerFrameScaleFrame) then
 			ShadowPriestDoTTimerFrameScaleFrame = 1.0
 		end
+		SPDT_POPUP:Hide();
 		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerFrameScaleFrame);
 		SetCooldownOffsets();
 		
@@ -253,16 +255,29 @@ function CheckCurrentTargetDeBuffs()
 				
 				if bn == nameVT then 
 					VTFound = 1 
-					VTlefttime = floor((((bexpirationTime-GetTime())*10)+ 0.5))/10				
-					VTLeft = string.format("%1.1f",VTlefttime)							
+					VTlefttime = floor((((bexpirationTime-GetTime())*10)+ 0.5))/10	
+					
+					if(VTlefttime <= 5.0) then				
+						VTLeft = string.format("%1.1f",VTlefttime);
+					else
+						VTLeft = string.format("%d",VTlefttime);
+					end			
+										
 					VTleftMS = VTlefttime*1000
 					CastTime = castTimeVT	
-					VTleftMSSafe = VTleftMS-WarningTime
+					--VTleftMSSafe = VTleftMS-WarningTime
+					VTduration = bduration;
 				end
 				if bn == namePlague then 
 					PlagueFound = 1
-					Plaguelefttime = floor((((bexpirationTime-GetTime())*10)+ 0.5))/10				
-					PlagueLeft = string.format("%1.1f",Plaguelefttime)	 
+					Plaguelefttime = floor((((bexpirationTime-GetTime())*10)+ 0.5))/10	
+					
+					if(Plaguelefttime <= 5.0) then				
+						PlagueLeft = string.format("%1.1f",Plaguelefttime);
+					else
+						PlagueLeft = string.format("%d",Plaguelefttime);
+					end		
+				
 					PlagueleftMS = Plaguelefttime*1000
 				end
 				if bn == nameWordPain then 
@@ -287,10 +302,23 @@ function CheckCurrentTargetDeBuffs()
 		end
 		TEXT1Above:Show();
 
+		
+
 		FindCurrentMob();
 		if (currentmob) then
 			TEXT1Above:SetText(string.format("%d", currentmob[2]));
 		end
+		if(ColorDots == true) then
+		 	--colour the current buff score based based on if its higher or lower
+			if (buffscorecurrent > (currentmob[2])) then
+				TEXT1Above:SetVertexColor(1.0, 0.1, 0.1);	--red 
+			elseif (buffscorecurrent < (currentmob[2])) then
+				TEXT1Above:SetVertexColor(0.1, 0.6, 0.1);	--green
+			end
+		else
+			TEXT1Above:SetVertexColor(1.0, 0.9, 0.1);	--yellow
+		end
+		
 
 		TEXT1:SetText(VTLeft);
 		TEXT1:Show();
@@ -316,6 +344,16 @@ function CheckCurrentTargetDeBuffs()
 		FindCurrentMob();
 		if (currentmob) then
 			TEXT2Above:SetText(string.format("%d", currentmob[3]));
+		end
+
+		if(ColorDots == true) then
+		 	if (buffscorecurrent > (currentmob[3])) then
+				TEXT2Above:SetVertexColor(1.0, 0.1, 0.1);	--red 
+			elseif (buffscorecurrent < (currentmob[3])) then
+				TEXT2Above:SetVertexColor(0.1, 0.6, 0.1);	--green
+			end
+		else
+			TEXT2Above:SetVertexColor(1.0, 0.9, 0.1);	--yellow
 		end
 
 		TEXT2:SetText(PlagueLeft);
@@ -354,6 +392,7 @@ function CheckPlayerBuffs()
 	local MBLeft = 0;
 
 	buffscorecurrent = 0;
+	savedbuffscorecurrent = 0;
 	local base, stat, posBuff, negBuff = UnitStat("player",4);
 
 	while not finished do
@@ -454,7 +493,7 @@ function CheckPlayerBuffs()
 	
 	MBstart, MBduration, MBenabled = GetSpellCooldown(MindBlastID);	--MB CD
 	MBLeft = MBduration - (floor((((GetTime()-MBstart)*10)+ 0.5))/10);
-	if (HideMB == 0 and MBstart > 0 and MBduration > 1.5) then
+	if (HideMB == false and MBstart > 0 and MBduration > 1.5) then
 		TEXT5:SetText(string.format("%1.1f", MBLeft));
 		TEXT5:Show();
 		SPDT_MB_Texture:Show();
@@ -463,7 +502,7 @@ function CheckPlayerBuffs()
 		SPDT_MB_Texture:Hide();
 	end
 
-	if (ShadowOrbsFound == 1 and HideOrbs == 0) then
+	if (ShadowOrbsFound == 1 and HideOrbs == false) then
 		SPDT_ORB_Texture:SetTexture(IconShadowOrbs);
 		SPDT_ORB_Texture:Show();
 		TEXT6Above:SetText(ShadowOrbsStacks);
@@ -485,7 +524,7 @@ function CheckPlayerBuffs()
 		else								-- not 3 orbs
 			SPDT_ORB_Texture:SetVertexColor(1.0, 1.0, 1.0);		--no colour
 		end
-	elseif (EmpShadowFound == 1 and HideES == 0) then
+	elseif (EmpShadowFound == 1 and HideES == false) then
 		SPDT_ORB_Texture:SetVertexColor(1.0, 1.0, 1.0);		--no colour
 		TEXT6Above:Hide();
 		SPDT_ORB_Texture:SetTexture(IconEmpShadow);
@@ -498,7 +537,7 @@ function CheckPlayerBuffs()
 		TEXT6Above:Hide();
 	end
 	
-	if (DarkEvanFound == 1 and HideEvangelism == 0) then
+	if (DarkEvanFound == 1 and HideEvangelism == false) then
 		SPDT_DE_Texture:Show();
 		TEXT7:SetText(DarkEvanLeft);
 		TEXT7Above:SetText(DarkEvanStacks);
@@ -510,7 +549,7 @@ function CheckPlayerBuffs()
 		TEXT7Above:Hide();
 	end
 
-	if (AAFound == 1 and HideAA == 0) then
+	if (AAFound == 1 and HideAA == false) then
 		SPDT_Archangel_Texture:Show();
 		TEXT8:SetText(AALeft);
 		TEXT8:Show();	
@@ -537,11 +576,13 @@ local function SLASH_SHADOWPRIESTDOTTIMERhandler(msg, editbox)
 	elseif  msg == 'clear' then
 		ClearMobList();
 	elseif  msg == 'lock' then	
+		SPDT_POPUP:Hide();
 		ShadowPriestDoTTimerFrame:EnableMouse(false);
 		ShadowPriestDoTTimerFrame:SetBackdrop(nil);
 		SetCooldownOffsets();
 		STmode = 1
 	elseif  msg == 'move' then
+		SPDT_POPUP:Show();
 		ShadowPriestDoTTimerFrame:EnableMouse(true);
 		ShadowPriestDoTTimerFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile= "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 4, tile = false, tileSize =16, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
 		STmode = 2
@@ -576,7 +617,13 @@ end
 
 SlashCmdList["SHADOWPRIESTDOTTIMER"] = SLASH_SHADOWPRIESTDOTTIMERhandler;
 
-
+function lockSPDT()
+	ShadowPriestDoTTimerFrame:EnableMouse(false);
+	ShadowPriestDoTTimerFrame:SetBackdrop(nil);
+	SetCooldownOffsets();
+	SPDT_POPUP:Hide();
+	STmode = 1
+end
 
 
 

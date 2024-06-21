@@ -1,4 +1,4 @@
-﻿-- Author      : Kressilac /Duskwood - Bathral@BlackhandEU  - Lyonzy@GehennasEU
+﻿-- Author      : Kressilac - Bathral  - Lyonzy
 -- Create Date : 21/6/2024 
 
 local defaultdamageweight = .01
@@ -7,11 +7,12 @@ local defaultcritweight = .48
 local defaulthasteweight = .51
 local defaultspellpowerweight = .79
 local maxentries = 6
-local defaulthidees = 0;
-local defaulthideaa = 0;
-local defaulthideevangelism = 0;
-local defaulthideorbs = 0;
-local defaulthidemb = 0;
+local defaulthidees = false;
+local defaulthideaa = false;
+local defaulthideevangelism = false;
+local defaulthideorbs = false;
+local defaulthidemb = false;
+local defaulthidecolor = false;
 local defaultcooldownoffset = 0;
 
 local defaultbufftable = {}
@@ -72,30 +73,35 @@ function SaveButton_OnClick()
 	CooldownOffset = EditBoxCooldownOffset:GetNumber();
 	SetCooldownOffsets();
 
-	if (CheckButtonHideEvangelism:GetChecked() == 1) then
-		HideEvangelism = 1;
+	if (CheckButtonHideEvangelism:GetChecked()) then
+		HideEvangelism = true;
 	else
-		HideEvangelism = 0;
+		HideEvangelism = false;
 	end		
-	if (CheckButtonHideOrbs:GetChecked() == 1) then
-		HideOrbs = 1;
+	if (CheckButtonHideOrbs:GetChecked()) then
+		HideOrbs = true;
 	else
-		HideOrbs = 0;
+		HideOrbs = false;
 	end		
-	if (CheckButtonHideES:GetChecked() == 1) then
-		HideES = 1;
+	if (CheckButtonHideES:GetChecked()) then
+		HideES = true;
 	else
-		HideES = 0;
+		HideES = false;
 	end		
-	if (CheckButtonHideAA:GetChecked() == 1) then
-		HideAA = 1;
+	if (CheckButtonHideAA:GetChecked()) then
+		HideAA = true;
 	else
-		HideAA = 0;
+		HideAA = false;
 	end		
-	if (CheckButtonHideMB:GetChecked() == 1) then
-		HideMB = 1;
+	if (CheckButtonHideMB:GetChecked()) then
+		HideMB = true;
 	else
-		HideMB = 0;
+		HideMB = false;
+	end		
+	if (CheckButtonColorDots:GetChecked()) then
+		ColorDots = true;
+	else
+		ColorDots = false;
 	end		
 	DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Options Saved...");
 end
@@ -166,7 +172,7 @@ function OptionsFrame_OnEvent(self, event, ...)
 			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default BuffList Loaded...");
 		end
 
-			ClassBuffList = defaultclbufftable;	--load the class list
+		ClassBuffList = defaultclbufftable;	--load the class list
 		
 		if(not HideAA) then
 			HideAA = defaulthideaa;
@@ -183,6 +189,9 @@ function OptionsFrame_OnEvent(self, event, ...)
 		if(not HideMB) then
 			HideMB = defaulthidemb;
 		end
+		if(not ColorDots) then
+			ColorDots = defaulthidecolor;
+		end
 		if(not CooldownOffset) then
 			CooldownOffset = defaultcooldownoffset;
 			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default Cooldown Offset Loaded...");
@@ -196,28 +205,33 @@ function OptionsFrame_OnEvent(self, event, ...)
 		EditBoxSpellPower:SetText(string.format("%1.2f", SpellpowerWeight));
 		EditBoxCooldownOffset:SetText(string.format("%d", CooldownOffset));
 
-		if (HideAA == 1) then
+		if (HideAA == true) then
 			--DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Hide Dark Archangel");
 			CheckButtonHideAA:SetChecked(true);
 		end
-		if (HideEvangelism == 1) then
+		if (HideEvangelism == true) then
 			--DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Hide Evangelism");
 			CheckButtonHideEvangelism:SetChecked(true);
 		end
-		if (HideES == 1) then
+		if (HideES == true) then
 			--DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Hide Empowered Shadow");
 			CheckButtonHideES:SetChecked(true);
 		end
-		if (HideOrbs == 1) then
+		if (HideOrbs == true) then
 			--DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Hide Shadow Orbs");
 			CheckButtonHideOrbs:SetChecked(true);
 		end
 
-		if (HideMB == 1) then
+		if (HideMB == true) then
 			--DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Hide Mind Blast");
 			CheckButtonHideMB:SetChecked(true);
 		end
 
+		if (ColorDots == true) then
+			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Dot Colour =1");
+			CheckButtonColorDots:SetChecked(true);
+		end
+		
 		BuffListBoxUpdate();
 
 		DEFAULT_CHAT_FRAME:AddMessage("--- SPDT Classic Stat Weights Loaded ---");
@@ -229,30 +243,35 @@ function OptionsFrame_OnEvent(self, event, ...)
 		SpellpowerWeight = EditBoxSpellPower:GetNumber();
 		CooldownOffset = EditBoxCooldownOffset:GetNumber();
 
-		if (CheckButtonHideEvangelism:GetChecked() == 1) then
-			HideEvangelism = 1;
+		if (CheckButtonHideEvangelism:GetChecked()) then
+			HideEvangelism = true;
 		else
-			HideEvangelism = 0;
+			HideEvangelism = false;
 		end		
-		if (CheckButtonHideOrbs:GetChecked() == 1) then
-			HideOrbs = 1;
+		if (CheckButtonHideOrbs:GetChecked()) then
+			HideOrbs = true;
 		else
-			HideOrbs = 0;
+			HideOrbs = false;
 		end		
-		if (CheckButtonHideES:GetChecked() == 1) then
-			HideES = 1;
+		if (CheckButtonHideES:GetChecked()) then
+			HideES = true;
 		else
-			HideES = 0;
+			HideES = false;
 		end		
-		if (CheckButtonHideAA:GetChecked() == 1) then
-			HideAA = 1;
+		if (CheckButtonHideAA:GetChecked()) then
+			HideAA = true;
 		else
-			HideAA = 0;
+			HideAA = false;
 		end		
-		if (CheckButtonHideMB:GetChecked() == 1) then
-			HideMB = 1;
+		if (CheckButtonHideMB:GetChecked()) then
+			HideMB = true;
 		else
-			HideMB = 0;
+			HideMB = false;
+		end		
+		if (CheckButtonColorDots:GetChecked()) then
+			ColorDots = true;
+		else
+			ColorDots = false;
 		end		
 	end
 end
