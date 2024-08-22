@@ -57,8 +57,8 @@ function ShadowPriestDoTTimerFrame_OnLoad(self)
 	ShadowPriestDoTTimerFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED");
 	ShadowPriestDoTTimerFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
 	ShadowPriestDoTTimerFrame:RegisterEvent("PLAYER_REGEN_DISABLED");
+	ShadowPriestDoTTimerFrame:RegisterEvent("PLAYER_TALENT_UPDATE");
 
-	DEFAULT_CHAT_FRAME:AddMessage("--- SPDT Classic Loaded ---");
 	SPDT_SWP_Texture:SetTexture(IconWordPain);
 	SPDT_DP_Texture:SetTexture(IconPlague);
 	SPDT_VT_Texture:SetTexture(IconVT);
@@ -84,6 +84,7 @@ function ShadowPriestDoTTimerFrame_OnLoad(self)
 
 	ShadowPriestDoTTimerFrame:RegisterForDrag("LeftButton", "RightButton");
 	ShadowPriestDoTTimerFrame:EnableMouse(false);
+	checkIfShadow();
 end
 
 function ShadowPriestDoTTimerFrame_OnUpdate(elapsed)
@@ -132,6 +133,7 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
  		if (not ShadowPriestDoTTimerFrameScaleFrame) then
 			ShadowPriestDoTTimerFrameScaleFrame = 1.0
 		end
+		
 		SPDT_POPUP:Hide();
 		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerFrameScaleFrame);
 		SetCooldownOffsets();
@@ -140,6 +142,8 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
 		ShadowPriestDoTTimerFrameScaleFrame = ShadowPriestDoTTimerFrame:GetScale();
 		point, relativeTo, relativePoint, xOffset, yOffset = self:GetPoint(1);
 		ShadowPriestDoTTimerxPosiFrame = xOffset;
+	elseif (event == "PLAYER_TALENT_UPDATE") then  --when spec is changed
+		checkIfShadow();
 	elseif (event == "PLAYER_REGEN_ENABLED") then
 		if (maxmoblist < #moblist) then
 			--DP and VT don't last more than a minute so once we've been ooc for a minute, clear up the list.
@@ -497,9 +501,16 @@ function CheckPlayerBuffs()
 		TEXT5:SetText(string.format("%1.1f", MBLeft));
 		TEXT5:Show();
 		SPDT_MB_Texture:Show();
+		-- add a check if always show mindblast is set
+		SPDT_MB_Texture:SetDesaturated(true);
+		SPDT_MB_Texture:SetAlpha(.5);
+	elseif (InCombatLockdown() == false) then
+		SPDT_MB_Texture:Hide();
 	else
 		TEXT5:Hide();
-		SPDT_MB_Texture:Hide();
+		--another check for tis
+		SPDT_MB_Texture:SetDesaturated(false);
+		SPDT_MB_Texture:SetAlpha(1);
 	end
 
 	if (ShadowOrbsFound == 1 and HideOrbs == false) then
@@ -561,6 +572,16 @@ function CheckPlayerBuffs()
 
 return 
 end
+
+function checkIfShadow() -- see if shadowform is known
+	if (IsSpellKnown(15473)) then
+		ShadowPriestDoTTimerFrame:Show();
+	else 
+		ShadowPriestDoTTimerFrame:Hide();
+	end
+	-- UnitClassBase("player") == "PRIEST"
+end
+	
 
 SLASH_SHADOWPRIESTDOTTIMER1, SLASH_SHADOWPRIESTDOTTIMER2 = '/spdt', '/ShadowPriestDoTTimer';
 

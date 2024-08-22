@@ -1,4 +1,4 @@
-﻿-- Author      : Kressilac - Bathral  - Lyonzy
+-- Author      : Kressilac - Bathral  - Lyonzy
 -- Create Date : 21/6/2024 
 
 local defaultdamageweight = .01
@@ -6,7 +6,7 @@ local defaultmasteryweight = .48
 local defaultcritweight = .48
 local defaulthasteweight = .51
 local defaultspellpowerweight = .79
-local maxentries = 6
+local maxentries = 30 
 local defaulthidees = false;
 local defaulthideaa = false;
 local defaulthideevangelism = false;
@@ -26,6 +26,7 @@ table.insert(defaultbufftable, {"Soul Power","spellpower",1926 ,1});  		--Soul C
 table.insert(defaultbufftable, {"Witching Hour","Haste",1710 ,1});  		--Witching Hourglass
 table.insert(defaultbufftable, {"Jeweled Serpent","spellpower",1425 ,1}); 	--Figurine - Jeweled Serpent
 table.insert(defaultbufftable, {"Leviathan","spellpower",1425 ,1}); 		--Sea Star
+table.insert(defaultbufftable, {"Dire Magic","spellpower",2178 ,1});  		-- Bell of Enraging Resonance
 
 
 local defaultclbufftable = {}
@@ -54,9 +55,9 @@ table.insert(defaultclbufftable, {74242, "Int", 500, 1}); 		-- Power Torrent
 table.insert(defaultclbufftable, {74221, "Int", 1650, 1});      -- Hurricane
 
 --priest abilities
-table.insert(defaultclbufftable, {10060, "Haste", 20, 1});      -- Power Infusion Buff Haste Part
+table.insert(defaultclbufftable, {10060, "Haste", 20, 1});      -- Power Infusion Buff 
 table.insert(defaultclbufftable, {87118, "Damage", 2, 5}); 		-- Dark Evangelism
-table.insert(defaultclbufftable, {95799, "Damage", 10, 1}); 	--Empowered Shadow
+table.insert(defaultclbufftable, {95799, "Damage", 10, 1}); 	-- Empowered Shadow
 
 
 
@@ -103,7 +104,7 @@ function SaveButton_OnClick()
 	else
 		ColorDots = false;
 	end		
-	DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Options Saved...");
+	-- DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Options Saved...");
 end
 
 function OptionsFrame_OnLoad(panel)
@@ -380,15 +381,13 @@ end
 function ResetDefaultBuffsButton_OnClick()
 	DEFAULT_CHAT_FRAME:AddMessage("Resetting Buff List");
 	ClearBuffList();
-
-	BuffList = defaultbufftable;
-
 	BuffListBoxUpdate();
 	FontStringError:SetText("Buff List reset to defaults.");
 end
 
-function ClearBuffList()
-	for i = 1, #BuffList do
-		table.remove(BuffList, i);
+function ClearBuffList()  --clears the bufflist and then adds each entry from the defualtbufftable to bufftable.
+	wipe(BuffList)
+	for i = 1, #defaultbufftable do
+		table.insert(BuffList, defaultbufftable[i])
 	end
 end

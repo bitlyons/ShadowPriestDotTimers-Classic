@@ -1,9 +1,9 @@
-## Author: Kressilac @Duskwood, Lyonzy
+## Author: Lyonzy, Kressilac @Duskwood
 ## Interface: 40400
 ## Notes: updated to work on Classic Cata
 ## SavedVariables: HasteWeight, CritWeight, MasteryWeight, DamageWeight, SpellpowerWeight, ShadowPriestDoTTimerxPosiFrame, ShadowPriestDoTTimerFrameScaleFrame, HideEvangelism, HideOrbs, HideAA, HideES, BuffList, HideMB, CooldownOffset, ColorDots
 ## Title: Shadow Priest DoT Timer Classic
-## Version: 1.0
+## Version: 1.1
 ShadowPriestDotTimer.xml
 ShadowPriestDotTimer.lua
 Options.xml
