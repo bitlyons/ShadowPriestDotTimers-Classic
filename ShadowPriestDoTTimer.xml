@@ -79,7 +79,7 @@
 				
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="TEXT1" inherits="GameFontNormal" text="Icon1">
+				<FontString name="TEXT1_VT_" inherits="GameFontNormal" text="Icon1">
 					<Anchors>
 						<Anchor point="CENTER" relativeTo="SPDT_VT_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
@@ -88,7 +88,7 @@
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="TEXT1Above" inherits="GameFontNormal" text="0">
+				<FontString name="TEXT1_VT_Above" inherits="GameFontNormal" text="0">
 					<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="SPDT_VT_Texture" relativePoint="TOPLEFT">
 						<Offset x="0" y="15" />
@@ -97,7 +97,7 @@
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="TEXT2" inherits="GameFontNormal" text="Icon2">
+				<FontString name="TEXT2_DP_" inherits="GameFontNormal" text="Icon2">
 					<Anchors>
 						<Anchor point="CENTER" relativeTo="SPDT_DP_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
@@ -106,7 +106,7 @@
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="TEXT2Above" inherits="GameFontNormal" text="0">
+				<FontString name="TEXT2_DP_Above" inherits="GameFontNormal" text="0">
 					<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="SPDT_DP_Texture" relativePoint="TOPLEFT">
 						<Offset x="0" y="15" />
@@ -115,7 +115,7 @@
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="TEXT3" inherits="GameFontNormal" text="Icon3">
+				<FontString name="TEXT3_SWP" inherits="GameFontNormal" text="Icon3">
 					<Anchors>
 						<Anchor point="CENTER" relativeTo="SPDT_SWP_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />
@@ -124,7 +124,7 @@
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="TEXT4" inherits="GameFontNormal" text="Icon4">
+				<FontString name="TEXT4_BUFFSCORE" inherits="GameFontNormal" text="Icon4">
 					<Anchors>
 					<Anchor point="CENTER" relativeTo="Texture4" relativePoint="CENTER">
 						<Offset x="0" y="0" />
@@ -133,7 +133,7 @@
 				</FontString>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="TEXT5" inherits="GameFontNormal" text="Icon5">
+				<FontString name="TEXT5_MB" inherits="GameFontNormal" text="Icon5">
 					<Anchors>
 						<Anchor point="CENTER" relativeTo="SPDT_MB_Texture" relativePoint="CENTER">
 							<Offset x="0" y="0" />

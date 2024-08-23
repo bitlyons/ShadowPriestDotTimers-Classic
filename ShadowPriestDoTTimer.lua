@@ -58,6 +58,7 @@ function ShadowPriestDoTTimerFrame_OnLoad(self)
 	ShadowPriestDoTTimerFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
 	ShadowPriestDoTTimerFrame:RegisterEvent("PLAYER_REGEN_DISABLED");
 	ShadowPriestDoTTimerFrame:RegisterEvent("PLAYER_TALENT_UPDATE");
+	ShadowPriestDoTTimerFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 	SPDT_SWP_Texture:SetTexture(IconWordPain);
 	SPDT_DP_Texture:SetTexture(IconPlague);
@@ -71,20 +72,20 @@ function ShadowPriestDoTTimerFrame_OnLoad(self)
 	SPDT_DP_Texture:Hide();
 	SPDT_SWP_Texture:Hide();
 	Texture4:Hide();
-	TEXT4:Show();
-	TEXT5:Hide();
+	TEXT4_BUFFSCORE:Show();
+	TEXT5_MB:Hide();
 	SPDT_MB_Texture:Hide();
 	SPDT_ORB_Texture:Hide();
 	SPDT_DE_Texture:Hide();
 	SPDT_Archangel_Texture:Hide();
-	TEXT1Above:Show();
-	TEXT2Above:Show();
+	TEXT1_VT_Above:Show();
+	TEXT2_DP_Above:Show();
 	
 	TimeSinceLastUpdate = 0
 
 	ShadowPriestDoTTimerFrame:RegisterForDrag("LeftButton", "RightButton");
 	ShadowPriestDoTTimerFrame:EnableMouse(false);
-	checkIfShadow();
+	
 end
 
 function ShadowPriestDoTTimerFrame_OnUpdate(elapsed)
@@ -94,10 +95,10 @@ function ShadowPriestDoTTimerFrame_OnUpdate(elapsed)
 		CheckPlayerBuffs();
 
 		if (buffscorecurrent > 0) then
-			TEXT4:SetText(string.format("%d", buffscorecurrent));
-			TEXT4:Show();
+			TEXT4_BUFFSCORE:SetText(string.format("%d", buffscorecurrent));
+			TEXT4_BUFFSCORE:Show();
 		else
-			TEXT4:Hide();
+			TEXT4_BUFFSCORE:Hide();
 		end
 		TimeSinceLastUpdate = TimeSinceLastUpdate - MyAddon_UpdateInterval;
 	end
@@ -110,8 +111,8 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
 		local unit, _, spellid = ...;
 		if (unit == "player") then
 			if (spellid == VTID) then
-				TEXT1Above:Show();
-				TEXT1Above:SetText(string.format("%d", buffscorecurrent));
+				TEXT1_VT_Above:Show();
+				TEXT1_VT_Above:SetText(string.format("%d", buffscorecurrent));
 
 				FindOrCreateCurrentMob();
 				if (currentmob) then
@@ -119,8 +120,8 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
 					currentmob[4] = GetTime();
 				end
 			elseif (spellid == PlagueID) then
-				TEXT2Above:Show();
-				TEXT2Above:SetText(string.format("%d", buffscorecurrent));
+				TEXT2_DP_Above:Show();
+				TEXT2_DP_Above:SetText(string.format("%d", buffscorecurrent));
 
 				FindOrCreateCurrentMob();
 				if (currentmob) then
@@ -137,13 +138,19 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
 		SPDT_POPUP:Hide();
 		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerFrameScaleFrame);
 		SetCooldownOffsets();
-		
+		checkIfShadow();
+	elseif (event == "PLAYER_ENTERING_WORLD") then
+		checkIfShadow();
+		self:UnregisterEvent('PLAYER_ENTERING_WORLD')
+
 	elseif (event == "PLAYER_LOGOUT") then
 		ShadowPriestDoTTimerFrameScaleFrame = ShadowPriestDoTTimerFrame:GetScale();
 		point, relativeTo, relativePoint, xOffset, yOffset = self:GetPoint(1);
 		ShadowPriestDoTTimerxPosiFrame = xOffset;
+	
 	elseif (event == "PLAYER_TALENT_UPDATE") then  --when spec is changed
 		checkIfShadow();
+	
 	elseif (event == "PLAYER_REGEN_ENABLED") then
 		if (maxmoblist < #moblist) then
 			--DP and VT don't last more than a minute so once we've been ooc for a minute, clear up the list.
@@ -160,14 +167,14 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
 end
 
 function SetCooldownOffsets()
-	point, relativeTo, relativePoint, xOfs, yOfs = TEXT1:GetPoint();
-	TEXT1:SetPoint(point, relativeTo, relativePoint, xOfs, CooldownOffset);
-	point, relativeTo, relativePoint, xOfs, yOfs = TEXT2:GetPoint();
-	TEXT2:SetPoint(point, relativeTo, relativePoint, xOfs, CooldownOffset);
-	point, relativeTo, relativePoint, xOfs, yOfs = TEXT3:GetPoint();
-	TEXT3:SetPoint(point, relativeTo, relativePoint, xOfs, CooldownOffset);
-	point, relativeTo, relativePoint, xOfs, yOfs = TEXT5:GetPoint();
-	TEXT5:SetPoint(point, relativeTo, relativePoint, xOfs, CooldownOffset);
+	point, relativeTo, relativePoint, xOfs, yOfs = TEXT1_VT_:GetPoint();
+	TEXT1_VT_:SetPoint(point, relativeTo, relativePoint, xOfs, CooldownOffset);
+	point, relativeTo, relativePoint, xOfs, yOfs = TEXT2_DP_:GetPoint();
+	TEXT2_DP_:SetPoint(point, relativeTo, relativePoint, xOfs, CooldownOffset);
+	point, relativeTo, relativePoint, xOfs, yOfs = TEXT3_SWP:GetPoint();
+	TEXT3_SWP:SetPoint(point, relativeTo, relativePoint, xOfs, CooldownOffset);
+	point, relativeTo, relativePoint, xOfs, yOfs = TEXT5_MB:GetPoint();
+	TEXT5_MB:SetPoint(point, relativeTo, relativePoint, xOfs, CooldownOffset);
 	point, relativeTo, relativePoint, xOfs, yOfs = TEXT6:GetPoint();
 	TEXT6:SetPoint(point, relativeTo, relativePoint, xOfs, CooldownOffset);
 	point, relativeTo, relativePoint, xOfs, yOfs = TEXT7:GetPoint();
@@ -304,31 +311,31 @@ function CheckCurrentTargetDeBuffs()
 		else
 			SPDT_VT_Texture:SetVertexColor(1.0, 1.0, 1.0);
 		end
-		TEXT1Above:Show();
+		TEXT1_VT_Above:Show();
 
 		
 
 		FindCurrentMob();
 		if (currentmob) then
-			TEXT1Above:SetText(string.format("%d", currentmob[2]));
+			TEXT1_VT_Above:SetText(string.format("%d", currentmob[2]));
 		end
 		if(ColorDots == true) then
 		 	--colour the current buff score based based on if its higher or lower
 			if (buffscorecurrent > (currentmob[2])) then
-				TEXT1Above:SetVertexColor(1.0, 0.1, 0.1);	--red 
+				TEXT1_VT_Above:SetVertexColor(1.0, 0.1, 0.1);	--red 
 			elseif (buffscorecurrent < (currentmob[2]) or buffscorecurrent == (currentmob[2])) then
-				TEXT1Above:SetVertexColor(0.1, 0.6, 0.1);	--green
+				TEXT1_VT_Above:SetVertexColor(0.1, 0.6, 0.1);	--green
 			end
 		else
-			TEXT1Above:SetVertexColor(1.0, 0.9, 0.1);	--yellow
+			TEXT1_VT_Above:SetVertexColor(1.0, 0.9, 0.1);	--yellow
 		end
 		
 
-		TEXT1:SetText(VTLeft);
-		TEXT1:Show();
+		TEXT1_VT_:SetText(VTLeft);
+		TEXT1_VT_:Show();
 	else
-		TEXT1Above:Hide();
-		TEXT1:Hide();
+		TEXT1_VT_Above:Hide();
+		TEXT1_VT_:Hide();
 		SPDT_VT_Texture:Hide();
 	end
 
@@ -343,38 +350,38 @@ function CheckCurrentTargetDeBuffs()
 		else
 			SPDT_DP_Texture:SetVertexColor(1.0, 1.0, 1.0);
 		end
-		TEXT2Above:Show();
+		TEXT2_DP_Above:Show();
 
 		FindCurrentMob();
 		if (currentmob) then
-			TEXT2Above:SetText(string.format("%d", currentmob[3]));
+			TEXT2_DP_Above:SetText(string.format("%d", currentmob[3]));
 		end
 
 		if(ColorDots == true) then
 		 	if (buffscorecurrent > (currentmob[3])) then
-				TEXT2Above:SetVertexColor(1.0, 0.1, 0.1);	--red 
+				TEXT2_DP_Above:SetVertexColor(1.0, 0.1, 0.1);	--red 
 			elseif (buffscorecurrent < (currentmob[3]) or buffscorecurrent == (currentmob[3])) then
-				TEXT2Above:SetVertexColor(0.1, 0.6, 0.1);	--green
+				TEXT2_DP_Above:SetVertexColor(0.1, 0.6, 0.1);	--green
 			end
 		else
-			TEXT2Above:SetVertexColor(1.0, 0.9, 0.1);	--yellow
+			TEXT2_DP_Above:SetVertexColor(1.0, 0.9, 0.1);	--yellow
 		end
 
-		TEXT2:SetText(PlagueLeft);
-		TEXT2:Show();	
+		TEXT2_DP_:SetText(PlagueLeft);
+		TEXT2_DP_:Show();	
 	else
-		TEXT2Above:Hide();
+		TEXT2_DP_Above:Hide();
 		SPDT_DP_Texture:Hide();
-		TEXT2:Hide();
+		TEXT2_DP_:Hide();
 	end
 
 	if WordPainFound == 1 then
 		SPDT_SWP_Texture:Show();
-		TEXT3:SetText(WordPainLeft);
-		TEXT3:Show();
+		TEXT3_SWP:SetText(WordPainLeft);
+		TEXT3_SWP:Show();
 	else
 		SPDT_SWP_Texture:Hide();
-		TEXT3:Hide();
+		TEXT3_SWP:Hide();
 	end
 
 return 
@@ -460,7 +467,7 @@ function CheckPlayerBuffs()
 				i = i + 1;
 			end
 			------------------------------------------
-			-- loop class buffs list untill we find a match.
+			-- loop class buffs list until we find a match.
 			found1 = false;
 			j = 1;
 			while found1 == false and j <= #ClassBuffList do
@@ -498,8 +505,8 @@ function CheckPlayerBuffs()
 	MBstart, MBduration, MBenabled = GetSpellCooldown(MindBlastID);	--MB CD
 	MBLeft = MBduration - (floor((((GetTime()-MBstart)*10)+ 0.5))/10);
 	if (HideMB == false and MBstart > 0 and MBduration > 1.5) then
-		TEXT5:SetText(string.format("%1.1f", MBLeft));
-		TEXT5:Show();
+		TEXT5_MB:SetText(string.format("%1.1f", MBLeft));
+		TEXT5_MB:Show();
 		SPDT_MB_Texture:Show();
 		-- add a check if always show mindblast is set
 		SPDT_MB_Texture:SetDesaturated(true);
@@ -507,10 +514,12 @@ function CheckPlayerBuffs()
 	elseif (InCombatLockdown() == false) then
 		SPDT_MB_Texture:Hide();
 	else
-		TEXT5:Hide();
-		--another check for tis
 		SPDT_MB_Texture:SetDesaturated(false);
 		SPDT_MB_Texture:SetAlpha(1);
+		TEXT5_MB:Hide();
+	end
+	if (MBduration <0.1) then -- added as temp fix
+		TEXT5_MB:Hide();
 	end
 
 	if (ShadowOrbsFound == 1 and HideOrbs == false) then
@@ -574,10 +583,12 @@ return
 end
 
 function checkIfShadow() -- see if shadowform is known
-	if (IsSpellKnown(15473)) then
+	if (IsSpellKnown(15473) == true) then
 		ShadowPriestDoTTimerFrame:Show();
+		--DEFAULT_CHAT_FRAME:AddMessage("shadow found");
 	else 
 		ShadowPriestDoTTimerFrame:Hide();
+		--DEFAULT_CHAT_FRAME:AddMessage("shadow not found");
 	end
 	-- UnitClassBase("player") == "PRIEST"
 end
