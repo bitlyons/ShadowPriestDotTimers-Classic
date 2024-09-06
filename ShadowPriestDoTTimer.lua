@@ -619,7 +619,7 @@ local function SLASH_SHADOWPRIESTDOTTIMERhandler(msg, editbox)
 		ShadowPriestDoTTimerFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile= "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 4, tile = false, tileSize =16, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
 		STmode = 2
 	elseif  msg == 'options' or msg =='' then
-		InterfaceOptionsFrame_OpenToCategory("Shadow Priest DoT Timer Classic");
+		Settings.OpenToCategory("SPDT Classic")
 	elseif  msg == 'scale1' then
 		ShadowPriestDoTTimerScaleFrame = 0.5
 		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerScaleFrame);

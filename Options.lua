@@ -1,5 +1,8 @@
 -- Author      : Kressilac - Bathral  - Lyonzy
--- Create Date : 21/6/2024 
+-- Create Date : 6/9/2024 
+
+local category, layout
+
 
 local defaultdamageweight = .01
 local defaultmasteryweight = .48
@@ -14,6 +17,7 @@ local defaulthideorbs = false;
 local defaulthidemb = false;
 local defaulthidecolor = false;
 local defaultcooldownoffset = 0;
+local category, layout
 
 local defaultbufftable = {}
 
@@ -27,6 +31,7 @@ table.insert(defaultbufftable, {"Witching Hour","Haste",1710 ,1});  		--Witching
 table.insert(defaultbufftable, {"Jeweled Serpent","spellpower",1425 ,1}); 	--Figurine - Jeweled Serpent
 table.insert(defaultbufftable, {"Leviathan","spellpower",1425 ,1}); 		--Sea Star
 table.insert(defaultbufftable, {"Dire Magic","spellpower",2178 ,1});  		-- Bell of Enraging Resonance
+
 
 
 local defaultclbufftable = {}
@@ -112,7 +117,7 @@ function OptionsFrame_OnLoad(panel)
     --
 	panel:RegisterEvent("ADDON_LOADED");
 	panel:RegisterEvent("PLAYER_LOGOUT");
-    panel.name = "Shadow Priest DoT Timer Classic";
+    panel.name = "SPDT Classic";
 
     -- When the player clicks okay, run this function.
     --
@@ -138,7 +143,13 @@ function OptionsFrame_OnLoad(panel)
 
     -- Add the panel to the Interface Options
     --
-    InterfaceOptions_AddCategory(panel);
+    --- old way   InterfaceOptions_AddCategory(panel);
+	--fix for new api
+	category, layout = Settings.RegisterCanvasLayoutCategory(panel, panel.name);
+	category.ID = "SPDT Classic"
+	Settings.RegisterAddOnCategory(category);
+	
+	
 	OptionsFrame:Hide();
 end
 
@@ -391,3 +402,5 @@ function ClearBuffList()  --clears the bufflist and then adds each entry from th
 		table.insert(BuffList, defaultbufftable[i])
 	end
 end
+
+
