@@ -7,7 +7,7 @@ local defaultmasteryweight = .48
 local defaultcritweight = .48
 local defaulthasteweight = .51
 local defaultspellpowerweight = .79
-local maxentries = 30 
+local maxentries = 16 
 local defaulthidees = false;
 local defaulthideaa = false;
 local defaulthideevangelism = false;
@@ -141,11 +141,10 @@ function OptionsFrame_OnLoad(panel)
 	--DEFAULT_CHAT_FRAME:AddMessage("Done Building Entry Frames");
 
     -- Add the panel to the Interface Options
-	
 	category, layout = Settings.RegisterCanvasLayoutCategory(panel, panel.name);
 	category.ID = "SPDT Classic"
 	Settings.RegisterAddOnCategory(category);
-	subcategory, subcategoryLayout = Settings.RegisterCanvasLayoutSubcategory(category, SPDTBuffSettings, "Buff List");
+	subcategory, subcategoryLayout = Settings.RegisterCanvasLayoutSubcategory(category, SPDTBuffSettings, "Buff List"); --buff menu
 	
 	OptionsFrame:Hide();
 end
@@ -280,11 +279,11 @@ function OptionsFrame_OnEvent(self, event, ...)
 end
 
 function SetWeights()
-	EditBoxHaste:SetText(string.format("%1.2f", HasteWeight));
-	EditBoxCrit:SetText(string.format("%1.2f", CritWeight));
-	EditBoxMastery:SetText(string.format("%1.2f", MasteryWeight));
+	EditBoxHaste:SetText(string.format("%1.3f", HasteWeight));
+	EditBoxCrit:SetText(string.format("%1.3f", CritWeight));
+	EditBoxMastery:SetText(string.format("%1.3f", MasteryWeight));
 	EditBoxDamage:SetText(string.format("%1.2f", DamageWeight));
-	EditBoxSpellPower:SetText(string.format("%1.2f", SpellpowerWeight));
+	EditBoxSpellPower:SetText(string.format("%1.3f", SpellpowerWeight));
 	EditBoxCooldownOffset:SetText(string.format("%d", CooldownOffset));
 end
 
@@ -406,10 +405,59 @@ function ResetDefaultBuffsButton_OnClick()
 	FontStringError:SetText("Buff List reset to defaults.");
 end
 
-
 function ClearBuffList()  --clears the bufflist and then adds each entry from the defualtbufftable to bufftable.
 	wipe(BuffList)
 	for i = 1, #defaultbufftable do
 		table.insert(BuffList, defaultbufftable[i])
 	end
+end
+
+function SPDTPawnButton_OnClick()
+	StaticPopupDialogs["SPDT_Pawn_EP_import"] = {
+
+		text = "Please enter pawn string \n \124cFFFF0000NOTE: default stats are perfectly fine to use",
+		button1 = "Accept",
+		button2 = "Cancel",
+		hasEditBox = true,
+		editBoxWidth = 300,
+		OnAccept = function (self)
+			importString = self.editBox:GetText ();
+			if (importString ~= "") then
+				importPawn(importString)
+			end
+		end,
+		timeout = 0,	
+		whileDead = true,
+		hideOnEscape = true,
+	}
+	StaticPopup_Show("SPDT_Pawn_EP_import")
+end
+
+
+function importPawn(import)
+	local class = extractStat(import, "Class")
+	local CritImport = extractStat(import, "CritRating")
+	local HasteImport = extractStat(import, "HasteRating")
+	local MasteryImport = extractStat(import, "MasteryRating")
+	local SpellpowerImport = extractStat(import, "SpellDamage")
+
+	if(class ~= nil) then
+		if(CritImport ~= nil and HasteImport ~= nil and  MasteryImport ~= nil and SpellpowerImport ~= nil) then
+			CritWeight = CritImport
+			HasteWeight = HasteImport
+			MasteryWeight =MasteryImport
+			SpellpowerWeight =SpellpowerImport
+			SetWeights();
+			DEFAULT_CHAT_FRAME:AddMessage("\124cFF00FF00 Stat Weights Imported");
+		else
+			DEFAULT_CHAT_FRAME:AddMessage("\124cFFFF0000 ERROR importing Stat Weights");
+		end
+	else
+		DEFAULT_CHAT_FRAME:AddMessage("\124cFFFF0000 ERROR importing Stat Weights");
+	end
+
+end
+
+function extractStat(input, statName)
+    return input:match(statName .. '=([%a%d%.]+)')  -- Match alphanumeric + decimal for values
 end

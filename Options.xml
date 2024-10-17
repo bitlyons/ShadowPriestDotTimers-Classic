@@ -395,7 +395,7 @@
 					</CheckButton>
 					<Button name="ResetDefaultWeightsButton" inherits="UIPanelButtonTemplate" text="Reset Weights">
 						<Size>
-							<AbsDimension x="86" y="23" />
+							<AbsDimension x="100" y="23" />
 						</Size>
 						<Anchors>
 							<Anchor point="TOPLEFT">
@@ -408,7 +408,17 @@
 							</OnClick>
 						</Scripts>
 					</Button>
-					
+					<Button name="SPDTPawn" inherits="UIPanelButtonTemplate" text="Import Pawn EP">
+						<Size x="120" y="23" />
+						<Anchors>
+							<Anchor x="177" y="-204" point="TOPLEFT" />
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								 SPDTPawnButton_OnClick()
+							</OnClick>
+						</Scripts>
+					</Button>
 				</Frames>
 			</Frame>
 
