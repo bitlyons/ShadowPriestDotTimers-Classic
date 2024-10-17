@@ -77,37 +77,7 @@ function SaveButton_OnClick()
 	SpellpowerWeight = EditBoxSpellPower:GetNumber();
 	CooldownOffset = EditBoxCooldownOffset:GetNumber();
 	SetCooldownOffsets();
-
-	if (CheckButtonHideEvangelism:GetChecked()) then
-		HideEvangelism = true;
-	else
-		HideEvangelism = false;
-	end		
-	if (CheckButtonHideOrbs:GetChecked()) then
-		HideOrbs = true;
-	else
-		HideOrbs = false;
-	end		
-	if (CheckButtonHideES:GetChecked()) then
-		HideES = true;
-	else
-		HideES = false;
-	end		
-	if (CheckButtonHideAA:GetChecked()) then
-		HideAA = true;
-	else
-		HideAA = false;
-	end		
-	if (CheckButtonHideMB:GetChecked()) then
-		HideMB = true;
-	else
-		HideMB = false;
-	end		
-	if (CheckButtonColorDots:GetChecked()) then
-		ColorDots = true;
-	else
-		ColorDots = false;
-	end		
+	SetCheckBoxes()
 	-- DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Options Saved...");
 end
 
@@ -244,38 +214,43 @@ function OptionsFrame_OnEvent(self, event, ...)
 		DamageWeight = EditBoxDamage:GetNumber();
 		SpellpowerWeight = EditBoxSpellPower:GetNumber();
 		CooldownOffset = EditBoxCooldownOffset:GetNumber();
-
-		if (CheckButtonHideEvangelism:GetChecked()) then
-			HideEvangelism = true;
-		else
-			HideEvangelism = false;
-		end		
-		if (CheckButtonHideOrbs:GetChecked()) then
-			HideOrbs = true;
-		else
-			HideOrbs = false;
-		end		
-		if (CheckButtonHideES:GetChecked()) then
-			HideES = true;
-		else
-			HideES = false;
-		end		
-		if (CheckButtonHideAA:GetChecked()) then
-			HideAA = true;
-		else
-			HideAA = false;
-		end		
-		if (CheckButtonHideMB:GetChecked()) then
-			HideMB = true;
-		else
-			HideMB = false;
-		end		
-		if (CheckButtonColorDots:GetChecked()) then
-			ColorDots = true;
-		else
-			ColorDots = false;
-		end		
+		SetCheckBoxes()
 	end
+end
+
+function SetCheckBoxes()
+	if (CheckButtonHideEvangelism:GetChecked()) then
+		HideEvangelism = true;
+	else
+		HideEvangelism = false;
+	end		
+	if (CheckButtonHideOrbs:GetChecked()) then
+		HideOrbs = true;
+
+	else
+		HideOrbs = false;
+	end		
+	if (CheckButtonHideES:GetChecked()) then
+		HideES = true;
+	else
+		HideES = false;
+	end		
+	if (CheckButtonHideAA:GetChecked()) then
+		HideAA = true;
+	else
+		HideAA = false;
+	end		
+	if (CheckButtonHideMB:GetChecked()) then
+		HideMB = true;
+		SPDT_MB_Texture:Hide(); --for cases where it is waiting to timeout still.
+	else
+		HideMB = false;
+	end		
+	if (CheckButtonColorDots:GetChecked()) then
+		ColorDots = true;
+	else
+		ColorDots = false;
+	end		
 end
 
 function SetWeights()
@@ -458,6 +433,10 @@ function importPawn(import)
 
 end
 
-function extractStat(input, statName)
+function extractStat(input, statName) -- for pawn import
     return input:match(statName .. '=([%a%d%.]+)')  -- Match alphanumeric + decimal for values
+end
+
+function hideButtons() -- for the tickboxes to hide elements
+	SetCheckBoxes()
 end

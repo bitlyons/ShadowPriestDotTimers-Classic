@@ -85,7 +85,6 @@ function ShadowPriestDoTTimerFrame_OnLoad(self)
 
 	ShadowPriestDoTTimerFrame:RegisterForDrag("LeftButton", "RightButton");
 	ShadowPriestDoTTimerFrame:EnableMouse(false);
-	
 end
 
 function ShadowPriestDoTTimerFrame_OnUpdate(elapsed)

@@ -277,6 +277,11 @@
 								</FontString>
 							</Layer>
 						</Layers>
+						<Scripts>
+							<OnClick>
+								hideButtons()
+							</OnClick>
+						</Scripts>
 					</CheckButton>
 					<CheckButton name="CheckButtonHideES" inherits="UICheckButtonTemplate" text="Empowered Shadow">
 						<Anchors>
@@ -300,6 +305,11 @@
 								</FontString>
 							</Layer>
 						</Layers>
+						<Scripts>
+							<OnClick>
+								hideButtons()
+							</OnClick>
+						</Scripts>
 					</CheckButton>
 					<CheckButton name="CheckButtonHideOrbs" inherits="UICheckButtonTemplate" text="Shadow Orbs">
 						<Anchors>
@@ -323,6 +333,11 @@
 								</FontString>
 							</Layer>
 						</Layers>
+						<Scripts>
+							<OnClick>
+								hideButtons()
+							</OnClick>
+						</Scripts>
 					</CheckButton>
 					<CheckButton name="CheckButtonHideEvangelism" inherits="UICheckButtonTemplate" text="Evangelism">
 						<Anchors>
@@ -346,6 +361,11 @@
 								</FontString>
 							</Layer>
 						</Layers>
+						<Scripts>
+							<OnClick>
+								hideButtons()
+							</OnClick>
+						</Scripts>
 					</CheckButton>
 					<CheckButton name="CheckButtonHideMB" inherits="UICheckButtonTemplate" text="Mind Blast">
 						<Anchors>
@@ -369,6 +389,11 @@
 								</FontString>
 							</Layer>
 						</Layers>
+						<Scripts>
+							<OnClick>
+								hideButtons()
+							</OnClick>
+						</Scripts>
 					</CheckButton>
 					<CheckButton name="CheckButtonColorDots" inherits="UICheckButtonTemplate" text="Dot Colour">
 						<Anchors>
@@ -392,6 +417,11 @@
 								</FontString>
 							</Layer>
 						</Layers>
+						<Scripts>
+							<OnClick>
+								hideButtons()
+							</OnClick>
+						</Scripts>
 					</CheckButton>
 					<Button name="ResetDefaultWeightsButton" inherits="UIPanelButtonTemplate" text="Reset Weights">
 						<Size>
