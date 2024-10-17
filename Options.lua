@@ -1,8 +1,6 @@
 -- Author      : Kressilac - Bathral  - Lyonzy
 -- Create Date : 6/9/2024 
 
-local category, layout
-
 
 local defaultdamageweight = .01
 local defaultmasteryweight = .48
@@ -18,6 +16,7 @@ local defaulthidemb = false;
 local defaulthidecolor = false;
 local defaultcooldownoffset = 0;
 local category, layout
+local subcategory, subcategoryLayout
 
 local defaultbufftable = {}
 
@@ -142,13 +141,11 @@ function OptionsFrame_OnLoad(panel)
 	--DEFAULT_CHAT_FRAME:AddMessage("Done Building Entry Frames");
 
     -- Add the panel to the Interface Options
-    --
-    --- old way   InterfaceOptions_AddCategory(panel);
-	--fix for new api
+	
 	category, layout = Settings.RegisterCanvasLayoutCategory(panel, panel.name);
 	category.ID = "SPDT Classic"
 	Settings.RegisterAddOnCategory(category);
-	
+	subcategory, subcategoryLayout = Settings.RegisterCanvasLayoutSubcategory(category, SPDTBuffSettings, "Buff List");
 	
 	OptionsFrame:Hide();
 end
@@ -208,14 +205,8 @@ function OptionsFrame_OnEvent(self, event, ...)
 			CooldownOffset = defaultcooldownoffset;
 			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default Cooldown Offset Loaded...");
 		end
-		
 
-		EditBoxHaste:SetText(string.format("%1.2f", HasteWeight));
-		EditBoxCrit:SetText(string.format("%1.2f", CritWeight));
-		EditBoxMastery:SetText(string.format("%1.2f", MasteryWeight));
-		EditBoxDamage:SetText(string.format("%1.2f", DamageWeight));
-		EditBoxSpellPower:SetText(string.format("%1.2f", SpellpowerWeight));
-		EditBoxCooldownOffset:SetText(string.format("%d", CooldownOffset));
+		SetWeights()
 
 		if (HideAA == true) then
 			--DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Hide Dark Archangel");
@@ -286,6 +277,25 @@ function OptionsFrame_OnEvent(self, event, ...)
 			ColorDots = false;
 		end		
 	end
+end
+
+function SetWeights()
+	EditBoxHaste:SetText(string.format("%1.2f", HasteWeight));
+	EditBoxCrit:SetText(string.format("%1.2f", CritWeight));
+	EditBoxMastery:SetText(string.format("%1.2f", MasteryWeight));
+	EditBoxDamage:SetText(string.format("%1.2f", DamageWeight));
+	EditBoxSpellPower:SetText(string.format("%1.2f", SpellpowerWeight));
+	EditBoxCooldownOffset:SetText(string.format("%d", CooldownOffset));
+end
+
+function ResetDefaultWeightsButton_OnClick()
+	DEFAULT_CHAT_FRAME:AddMessage("Resetting Stat Weights");
+	HasteWeight = defaulthasteweight;
+	CritWeight = defaultcritweight;
+	MasteryWeight = defaultmasteryweight;
+	DamageWeight = defaultdamageweight;
+	SpellpowerWeight = defaultspellpowerweight;
+	SetWeights();
 end
 
 function ButtonAddBuff_OnClick()
@@ -396,11 +406,10 @@ function ResetDefaultBuffsButton_OnClick()
 	FontStringError:SetText("Buff List reset to defaults.");
 end
 
+
 function ClearBuffList()  --clears the bufflist and then adds each entry from the defualtbufftable to bufftable.
 	wipe(BuffList)
 	for i = 1, #defaultbufftable do
 		table.insert(BuffList, defaultbufftable[i])
 	end
 end
-
-
