@@ -91,7 +91,6 @@ function ShadowPriestDoTTimerFrame_OnUpdate(elapsed)
 	while (TimeSinceLastUpdate > MyAddon_UpdateInterval) do
 		CheckCurrentTargetDeBuffs();
 		CheckPlayerBuffs();
-
 		if (buffscorecurrent > 0) then
 			TEXT4_BUFFSCORE:SetText(string.format("%d", buffscorecurrent));
 			TEXT4_BUFFSCORE:Show();
@@ -104,7 +103,6 @@ end
 
 function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
 	local arg1 = ...;
-
 	if (event == "UNIT_SPELLCAST_SUCCEEDED") then
 		local unit, _, spellid = ...;
 		if (unit == "player") then
@@ -139,15 +137,12 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
 	elseif (event == "PLAYER_ENTERING_WORLD") then
 		checkIfShadow();
 		self:UnregisterEvent('PLAYER_ENTERING_WORLD')
-
 	elseif (event == "PLAYER_LOGOUT") then
 		ShadowPriestDoTTimerFrameScaleFrame = ShadowPriestDoTTimerFrame:GetScale();
 		point, relativeTo, relativePoint, xOffset, yOffset = self:GetPoint(1);
 		ShadowPriestDoTTimerxPosiFrame = xOffset;
-	
 	elseif (event == "PLAYER_TALENT_UPDATE") then  --when spec is changed
 		checkIfShadow();
-	
 	elseif (event == "PLAYER_REGEN_ENABLED") then
 		if (maxmoblist < #moblist) then
 			--DP and VT don't last more than a minute so once we've been ooc for a minute, clear up the list.
@@ -259,8 +254,7 @@ function CheckCurrentTargetDeBuffs()
 		else
 			--DEFAULT_CHAT_FRAME:AddMessage("testing debuff");
 			if bisMine == "player" then
-				--DEFAULT_CHAT_FRAME:AddMessage("ismine debuff");
-				
+				--DEFAULT_CHAT_FRAME:AddMessage("ismine debuff");	
 				if bn == nameVT then 
 					VTFound = 1 
 					VTlefttime = floor((((bexpirationTime-GetTime())*10)+ 0.5))/10	
@@ -296,7 +290,6 @@ function CheckCurrentTargetDeBuffs()
 			end
 		end
 	end
-
 	if VTFound == 1 then
 		SPDT_VT_Texture:Show()
 		if  VTleftMS < VTlasttickTime then
@@ -309,8 +302,6 @@ function CheckCurrentTargetDeBuffs()
 			SPDT_VT_Texture:SetVertexColor(1.0, 1.0, 1.0);
 		end
 		TEXT1_VT_Above:Show();
-
-		
 
 		FindCurrentMob();
 		if (currentmob) then
@@ -326,8 +317,6 @@ function CheckCurrentTargetDeBuffs()
 		else
 			TEXT1_VT_Above:SetVertexColor(1.0, 0.9, 0.1);	--yellow
 		end
-		
-
 		TEXT1_VT_:SetText(VTLeft);
 		TEXT1_VT_:Show();
 	else
@@ -380,7 +369,6 @@ function CheckCurrentTargetDeBuffs()
 		SPDT_SWP_Texture:Hide();
 		TEXT3_SWP:Hide();
 	end
-
 return 
 end
 
@@ -406,7 +394,6 @@ function CheckPlayerBuffs()
 	while not finished do
 		count = count+1;
 		local bn,bicon,bcount,bType,bduration,bexpirationTime,bisMine,bisStealable,bshouldConsolidate,bspellId =  UnitBuff("player", count, 0);
-
 		local modifiedint = base + buffscorecurrent;
 		
 		if not bn then
@@ -440,11 +427,9 @@ function CheckPlayerBuffs()
 				if (entry) then
 					if (bn == entry[1]) then
 						found = true;
-
 						if (bcount <= 0) then
 							bcount = entry[4];
 						end
-
 						if (string.lower(entry[2]) == "int") then
 							buffscorecurrent = buffscorecurrent + (entry[3] * bcount);
 						elseif (string.lower(entry[2]) == "mastery") then
@@ -460,7 +445,6 @@ function CheckPlayerBuffs()
 						end
 					end
 				end
-
 				i = i + 1;
 			end
 			------------------------------------------
@@ -472,11 +456,9 @@ function CheckPlayerBuffs()
 				if (entry1) then
 					if (bspellId == entry1[1]) then
 						found1 = true;
-
 						if (bcount <= 0) then
 							bcount = entry1[4];
 						end
-
 						if (string.lower(entry1[2]) == "int") then
 							buffscorecurrent = buffscorecurrent + (entry1[3] * bcount);
 						elseif (string.lower(entry1[2]) == "mastery") then
@@ -492,10 +474,8 @@ function CheckPlayerBuffs()
 						end
 					end
 				end
-
 				j = j + 1;
 			end		
-
 		end
 	end
 	
@@ -553,7 +533,7 @@ function CheckPlayerBuffs()
 		TEXT6:Hide();	
 		TEXT6Above:Hide();
 	end
-	
+
 	if (DarkEvanFound == 1 and HideEvangelism == false) then
 		SPDT_DE_Texture:Show();
 		TEXT7:SetText(DarkEvanLeft);
@@ -565,7 +545,6 @@ function CheckPlayerBuffs()
 		TEXT7:Hide();
 		TEXT7Above:Hide();
 	end
-
 	if (AAFound == 1 and HideAA == false) then
 		SPDT_Archangel_Texture:Show();
 		TEXT8:SetText(AALeft);
@@ -574,22 +553,17 @@ function CheckPlayerBuffs()
 		SPDT_Archangel_Texture:Hide();
 		TEXT8:Hide();
 	end
-
-
 return 
 end
 
 function checkIfShadow() -- see if shadowform is known
 	if (IsSpellKnown(15473) == true) then
 		ShadowPriestDoTTimerFrame:Show();
-		--DEFAULT_CHAT_FRAME:AddMessage("shadow found");
 	else 
 		ShadowPriestDoTTimerFrame:Hide();
-		--DEFAULT_CHAT_FRAME:AddMessage("shadow not found");
 	end
 	-- UnitClassBase("player") == "PRIEST"
 end
-	
 
 SLASH_SHADOWPRIESTDOTTIMER1, SLASH_SHADOWPRIESTDOTTIMER2 = '/spdt', '/ShadowPriestDoTTimer';
 
@@ -600,15 +574,15 @@ local function SLASH_SHADOWPRIESTDOTTIMERhandler(msg, editbox)
 		ShadowPriestDoTTimerFrame:Hide();
 	elseif msg == 'toggle' then  -- toggle visability 
 		if InCombatLockdown() then
-            print("\124cffff0000 You cannot toggle visibility while in combat!")  -- Prevent toggle in combat
+            print("|cffff0000 You cannot toggle visibility while in combat!")  -- Prevent toggle in combat
             return
         end
         if ShadowPriestDoTTimerFrame:IsShown() then
             ShadowPriestDoTTimerFrame:Hide()   
-			print("\124cffffff00 SPDT is now hidden")
+			print("|cffffff00 SPDT is now hidden")
         else
             ShadowPriestDoTTimerFrame:Show()  
-			print("\124cffffff00 SPDT is now visible")
+			print("|cffffff00 SPDT is now visible")
         end
 	elseif  msg == 'reset' then
 		ShadowPriestDoTTimerFrame:Hide();
@@ -617,7 +591,7 @@ local function SLASH_SHADOWPRIESTDOTTIMERhandler(msg, editbox)
 	elseif  msg == 'clear' then
 		ClearMobList();
 	elseif  msg == 'lock' then	
-			print("\124cffffff00 Function removed, just press the lock button from the 'move' command")
+			print("|cffffff00 Function removed, just press the lock button from the 'move' command")
 	elseif  msg == 'move' then  
 			UnlockSPDT();
 	elseif  msg == 'options' or msg =='' then
@@ -628,11 +602,11 @@ local function SLASH_SHADOWPRIESTDOTTIMERhandler(msg, editbox)
         setSPDTScale(scaleValue)  -- Call the setScale function with the extracted scale value
 
 	elseif  msg == 'help' then
-		print("\124cffffff00 Syntax: /spdt (toggle | move | reset  | options | clearmoblist )");
-		print("\124cffffff00 Syntax: /spdt (scale [1-10])");
+		print("|cffffff00 Syntax: /spdt (toggle | move | reset | options | clearmoblist )");
+		print("|cffffff00 Syntax: /spdt (scale [1-10])");
 	else
-		print("\124cffffff00 Syntax: /spdt (toggle | move | reset  | options | clearmoblist )");
-		print("\124cffffff00 Syntax: /spdt (scale [1-10])");
+		print("|cffffff00 Syntax: /spdt (toggle | move | reset | options | clearmoblist )");
+		print("|cffffff00 Syntax: /spdt (scale [1-10])");
 	end
 end
 
@@ -640,10 +614,11 @@ SlashCmdList["SHADOWPRIESTDOTTIMER"] = SLASH_SHADOWPRIESTDOTTIMERhandler;
 
 function UnlockSPDT()
 	if not InCombatLockdown() then 
-		SettingsPanel:Hide()
+		HideUIPanel(SettingsPanel)
+		HideUIPanel(GameMenuFrame)
 		--the popup
 		StaticPopupDialogs["SPDT_Move_Window"] = {
-			text = "\124cffffff00 Press Lock to stop moving SPDT",
+			text = "|cffffff00 Press Lock to stop moving SPDT|r",
 			button1 = "Lock",
 			OnAccept = function (self)
 				lockSPDT()
@@ -665,8 +640,8 @@ function UnlockSPDT()
 		ShadowPriestDoTTimerFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile= "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 4, tile = false, tileSize =16, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
 		STmode = 2
 	else
-		print("|cffffff00 Cannot move SPDT while in combat.")
-		print("|cffffff00 Will unlock once combat ends")
+		print("|cffffff00 Cannot move SPDT while in combat.|r")
+		print("|cffffff00 Will unlock once combat ends|r")
 		   -- Register for the PLAYER_REGEN_ENABLED event to know when combat ends
 		   local SPDThiddenFrame = CreateFrame("Frame")
 		   SPDThiddenFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -678,7 +653,6 @@ function UnlockSPDT()
 				   self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 			   end
 		   end)
-
 	end
 end
 
@@ -692,6 +666,3 @@ function lockSPDT()
 	StaticPopup1:SetScript("OnDragStart", nil)
 	StaticPopup1:SetScript("OnDragStop", nil)
 end
-
-
-

@@ -3,7 +3,7 @@
 ## Notes: updated to work on Classic Cata
 ## SavedVariables: HasteWeight, CritWeight, MasteryWeight, DamageWeight, SpellpowerWeight, ShadowPriestDoTTimerxPosiFrame, ShadowPriestDoTTimerFrameScaleFrame, HideEvangelism, HideOrbs, HideAA, HideES, BuffList, HideMB, CooldownOffset, ColorDots, SPDTScale
 ## Title: Shadow Priest DoT Timer Classic
-## Version: 1.2
+## Version: 2.0
 ShadowPriestDotTimer.xml
 ShadowPriestDotTimer.lua
 Options.xml

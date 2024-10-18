@@ -34,7 +34,6 @@ table.insert(defaultbufftable, {"Revelation", "Mastery", 2178 , 1});		--Theralio
 table.insert(defaultbufftable, {"Dire Magic","spellpower",2178 ,1});  		--Bell of Enraging Resonance
 table.insert(defaultbufftable, {"Mark of the Firelord", "Int", 1277, 1});	--Rune of Zeth
 
-
 local defaultclbufftable = {}
 
 --class abilities
@@ -65,41 +64,13 @@ table.insert(defaultclbufftable, {10060, "Haste", 20, 1});      -- Power Infusio
 table.insert(defaultclbufftable, {87118, "Damage", 2, 5}); 		-- Dark Evangelism
 table.insert(defaultclbufftable, {95799, "Damage", 10, 1}); 	-- Empowered Shadow
 
-
-
-function CancelButton_OnClick()
-end
-
-function SaveButton_OnClick()
-	--Save the dialog's variables here.
-	HasteWeight = EditBoxHaste:GetNumber();
-	CritWeight = EditBoxCrit:GetNumber();
-	MasteryWeight = EditBoxMastery:GetNumber();
-	DamageWeight = EditBoxDamage:GetNumber();
-	SpellpowerWeight = EditBoxSpellPower:GetNumber();
-	CooldownOffset = EditBoxCooldownOffset:GetNumber();
-	SetCooldownOffsets();
-	SetCheckBoxes()
-	-- DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer Options Saved...");
-end
-
 function OptionsFrame_OnLoad(panel)
-    -- Set the name for the Category for the Panel
-    --
+    -- Set the name for the Category of the Panel
 	panel:RegisterEvent("ADDON_LOADED");
 	panel:RegisterEvent("PLAYER_LOGOUT");
     panel.name = "SPDT Classic";
-
-    -- When the player clicks okay, run this function.
-    --
-    panel.okay = function (self) SaveButton_OnClick(); end;
-
-    -- When the player clicks cancel, run this function.
-    --
-    panel.cancel = function (self) CancelButton_OnClick();  end;
-
+   
 	--Build the list of buttons in the table.
-		
 	--DEFAULT_CHAT_FRAME:AddMessage("Building Entry Frames");
 	local entry = CreateFrame("Button", "$parentEntry1", BuffListTable, "BuffListEntry");
 	entry:SetID(1);
@@ -117,7 +88,6 @@ function OptionsFrame_OnLoad(panel)
 	category.ID = "SPDT Classic"
 	Settings.RegisterAddOnCategory(category);
 	subcategory, subcategoryLayout = Settings.RegisterCanvasLayoutSubcategory(category, SPDTBuffSettings, "Buff List"); --buff menu
-	
 	OptionsFrame:Hide();
 end
 
@@ -125,12 +95,12 @@ function OptionsFrame_OnEvent(self, event, ...)
 	local arg1 = ...;
 	
 	if (event == "ADDON_LOADED"  and arg1 == "ShadowPriestDotTimer") then
-	
+		ClassBuffList = defaultclbufftable;	--load the class list
+		-- check if stats are set if not set to defaults
 		if(not HasteWeight) then
 			HasteWeight = defaulthasteweight;
 			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default HasteWeight Loaded...");
 		end
-		
 		if(not CritWeight) then
 			CritWeight = defaultcritweight;
 			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default CritWeight Loaded...");
@@ -151,13 +121,9 @@ function OptionsFrame_OnEvent(self, event, ...)
 			BuffList = defaultbufftable;
 			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default BuffList Loaded...");
 		end
-
 		if(not SPDTScale) then
 			SPDTScale= defaultSPDTpdtScale
 		end
-
-		ClassBuffList = defaultclbufftable;	--load the class list
-		
 		if(not HideAA) then
 			HideAA = defaulthideaa;
 		end
@@ -180,9 +146,6 @@ function OptionsFrame_OnEvent(self, event, ...)
 			CooldownOffset = defaultcooldownoffset;
 			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default Cooldown Offset Loaded...");
 		end
-
-		SetWeights()
-
 		if (HideAA == true) then
 			--DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Hide Dark Archangel");
 			CheckButtonHideAA:SetChecked(true);
@@ -199,21 +162,18 @@ function OptionsFrame_OnEvent(self, event, ...)
 			--DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Hide Shadow Orbs");
 			CheckButtonHideOrbs:SetChecked(true);
 		end
-
 		if (HideMB == true) then
 			--DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Hide Mind Blast");
 			CheckButtonHideMB:SetChecked(true);
 		end
-
 		if (ColorDots == true) then
 			DEFAULT_CHAT_FRAME:AddMessage("Shadow Priest DoT Timer: Dot Colour =1");
 			CheckButtonColorDots:SetChecked(true);
 		end
-		
+		SetWeights()
 		BuffListBoxUpdate();
 
 		SPDTScaleSlider:SetValue(SPDTScale)
-
 
 		DEFAULT_CHAT_FRAME:AddMessage("--- SPDT Classic Stat Weights Loaded ---");
 	elseif (event == "PLAYER_LOGOUT") then
@@ -273,7 +233,7 @@ function SetWeights()
 end
 
 function ResetDefaultWeightsButton_OnClick()
-	DEFAULT_CHAT_FRAME:AddMessage("Resetting Stat Weights");
+	DEFAULT_CHAT_FRAME:AddMessage("|cffffff00 Resetting Stat Weights|r");
 	HasteWeight = defaulthasteweight;
 	CritWeight = defaultcritweight;
 	MasteryWeight = defaultmasteryweight;
@@ -400,7 +360,7 @@ end
 function SPDTPawnButton_OnClick()
 	StaticPopupDialogs["SPDT_Pawn_EP_import"] = {
 
-		text = "Please enter pawn string \n \124cFFFF0000NOTE: default stats are perfectly fine to use",
+		text = "Please enter pawn string \n |cFFFF0000NOTE: default stats are perfectly fine to use",
 		button1 = "Accept",
 		button2 = "Cancel",
 		hasEditBox = true,
@@ -418,7 +378,6 @@ function SPDTPawnButton_OnClick()
 	StaticPopup_Show("SPDT_Pawn_EP_import")
 end
 
-
 function importPawn(import)
 	local class = extractStat(import, "Class")
 	local CritImport = extractStat(import, "CritRating")
@@ -433,12 +392,12 @@ function importPawn(import)
 			MasteryWeight =MasteryImport
 			SpellpowerWeight =SpellpowerImport
 			SetWeights();
-			DEFAULT_CHAT_FRAME:AddMessage("\124cFF00FF00 Stat Weights Imported");
+			DEFAULT_CHAT_FRAME:AddMessage("|cFF00FF00 Stat Weights Imported");
 		else
-			DEFAULT_CHAT_FRAME:AddMessage("\124cFFFF0000 ERROR importing Stat Weights");
+			DEFAULT_CHAT_FRAME:AddMessage("|cFFFF0000 ERROR importing Stat Weights");
 		end
 	else
-		DEFAULT_CHAT_FRAME:AddMessage("\124cFFFF0000 ERROR importing Stat Weights");
+		DEFAULT_CHAT_FRAME:AddMessage("|cFFFF0000 ERROR importing Stat Weights");
 	end
 
 end
@@ -447,23 +406,14 @@ function extractStat(input, statName) -- for pawn import
     return input:match(statName .. '=([%a%d%.]+)')  -- Match alphanumeric + decimal for values
 end
 
-function hideButtons() -- for the tickboxes to hide elements
-	SetCheckBoxes()
-end
-
-function moveSPDTButton_OnClick() -- options menu move button
-	UnlockSPDT()
-end
-
-function  resetSPDTButton_OnClick()
+function resetSPDTButton_OnClick()
 	if InCombatLockdown() then 
-		print("\124cFFFF0000 Cannot reset position while in combat")
+		print("|cFFFF0000 Cannot reset position while in combat")
 		return 
 	end
+	ShadowPriestDoTTimerFrame:ClearAllPoints()
 	ShadowPriestDoTTimerFrame:SetPoint("CENTER", 0, -70)
-
 end
-
 
 function SPDTScaleSlider_OnValueChanged(value)
 	setSPDTScale(value)
@@ -472,7 +422,7 @@ end
 function setSPDTScale(scale)
 	if InCombatLockdown() then
 		if not inCombatFlag then
-            print("\124cFFFF0000 Cannot change the scale while in combat")
+            print("|cFFFF0000 Cannot change the scale while in combat")
             inCombatFlag = true;  -- Set the flag so we don't print again during the same combat
         end
         SPDTScaleSlider:SetValue(SPDTScale)
@@ -519,20 +469,9 @@ function applySPDTScale(scale)
 		SPDTScale = 11;
 		ShadowPriestDoTTimerFrame:SetScale(1.5);
 	else
-		print("\124cFFFF0000 Only a value of 1-11 is accepted. 6 is the default value") 
+		print("|cFFFF0000 Only a value of 1-11 is accepted. 6 is the default value") 
 	end
 
 	
 end
 
--- Function to handle when the mouse enters the slider (show tooltip)
-function SPDTScaleSlider_OnEnter()
-    GameTooltip:SetOwner(SPDTScaleSlider, "ANCHOR_TOP")  -- Position the tooltip to the right of the slider
-    GameTooltip:SetText("Default value is 6")  
-    GameTooltip:Show()  
-end
-
--- Function to handle when the mouse leaves the slider (hide tooltip)
-function SPDTScaleSlider_OnLeave()
-    GameTooltip:Hide()  
-end

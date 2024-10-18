@@ -90,9 +90,9 @@
 			</Anchor>
 		</Anchors>
 
-		<!-- First tab settings-->
+		<!-- Main window settings-->
 		<Frames>
-			<Frame name="myTabPage1" hidden="false">
+			<Frame name="SPDT_options" hidden="false">
 				<Anchors>
 					<Anchor point="TOPLEFT"/>
 					<Anchor point="BOTTOMRIGHT"/>
@@ -264,7 +264,6 @@
 							</Anchor>
 						</Anchors>
 					</EditBox>
-					<!--- here -->
 					<CheckButton name="CheckButtonHideAA" inherits="UICheckButtonTemplate" text="Dark ArchAngel">
 						<Anchors>
 							<Anchor point="TOPLEFT">
@@ -289,7 +288,7 @@
 						</Layers>
 						<Scripts>
 							<OnClick>
-								hideButtons()
+								SetCheckBoxes()
 							</OnClick>
 						</Scripts>
 					</CheckButton>
@@ -317,7 +316,7 @@
 						</Layers>
 						<Scripts>
 							<OnClick>
-								hideButtons()
+								SetCheckBoxes()
 							</OnClick>
 						</Scripts>
 					</CheckButton>
@@ -345,7 +344,7 @@
 						</Layers>
 						<Scripts>
 							<OnClick>
-								hideButtons()
+								SetCheckBoxes()
 							</OnClick>
 						</Scripts>
 					</CheckButton>
@@ -373,7 +372,7 @@
 						</Layers>
 						<Scripts>
 							<OnClick>
-								hideButtons()
+								SetCheckBoxes()
 							</OnClick>
 						</Scripts>
 					</CheckButton>
@@ -401,7 +400,7 @@
 						</Layers>
 						<Scripts>
 							<OnClick>
-								hideButtons()
+								SetCheckBoxes()
 							</OnClick>
 						</Scripts>
 					</CheckButton>
@@ -429,7 +428,7 @@
 						</Layers>
 						<Scripts>
 							<OnClick>
-								hideButtons()
+								SetCheckBoxes()
 							</OnClick>
 						</Scripts>
 					</CheckButton>
@@ -444,7 +443,7 @@
 						</Anchors>
 						<Scripts>
 							<OnClick>
-						ResetDefaultWeightsButton_OnClick()
+								ResetDefaultWeightsButton_OnClick()
 							</OnClick>
 						</Scripts>
 					</Button>
@@ -480,11 +479,13 @@
         				</OnValueChanged>
 
 						<OnEnter>
-            				SPDTScaleSlider_OnEnter()
+            				GameTooltip:SetOwner(self, "ANCHOR_TOP")
+            				GameTooltip:SetText("Default value is 6")
+            				GameTooltip:Show()
         				</OnEnter>
         				<!-- Hide tooltip when mouse leaves slider -->
         				<OnLeave>
-            				SPDTScaleSlider_OnLeave()
+            				GameTooltip:Hide()
         				</OnLeave>
 					 </Scripts>
 					</Slider>
@@ -497,7 +498,7 @@
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								 moveSPDTButton_OnClick()
+								UnlockSPDT()
 							</OnClick>
 						</Scripts>
 						
@@ -697,6 +698,16 @@
 								<Offset x="221" y="-493" />
 							</Anchor>
 						</Anchors>
+						<Scripts>
+    					    <OnEnter>
+    					        GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
+    					        GameTooltip:SetText("|cffffff00int / haste / mastery / crit / spellpower", 1, 1, 1) 
+    					        GameTooltip:Show()
+    					    </OnEnter>
+    					    <OnLeave>
+    					        GameTooltip:Hide()
+    					    </OnLeave>
+    					</Scripts>
 					</EditBox>
 					<EditBox name="EditBoxAddModifier" inherits="InputBoxTemplate" enableKeyboard="true" numeric="true" autoFocus="false">
 						<Size>
