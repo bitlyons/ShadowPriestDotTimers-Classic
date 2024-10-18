@@ -1,7 +1,6 @@
 -- Author      : Kressilac - Bathral  - Lyonzy
 -- Create Date : 6/9/2024 
 
-
 local defaultdamageweight = .01
 local defaultmasteryweight = .48
 local defaultcritweight = .48
@@ -17,20 +16,23 @@ local defaulthidecolor = false;
 local defaultcooldownoffset = 0;
 local category, layout
 local subcategory, subcategoryLayout
+local defaultSPDTpdtScale = 6;
+local incombatFlag = false
 
 local defaultbufftable = {}
 
 table.insert(defaultbufftable, {"Volcanic Destruction", "Int", 1600, 1}); 	--DMC: volcano
-table.insert(defaultbufftable, {"Fiery Quintessence", "Int", 1149, 1});
-table.insert(defaultbufftable, {"Velocity", "Haste", 3278, 1});
-table.insert(defaultbufftable, {"Soul Fragment", "Mastery", 39, 10});
-table.insert(defaultbufftable, {"Combat Mind", "Int", 88, 10});
+table.insert(defaultbufftable, {"Fiery Quintessence", "Int", 1149, 1});     --Fiery Quintessence
+table.insert(defaultbufftable, {"Velocity", "Haste", 3278, 1});				--Insignia of the Corrupted Mind
+table.insert(defaultbufftable, {"Soul Fragment", "Mastery", 39, 10});		--Necromantic Focus
+table.insert(defaultbufftable, {"Combat Mind", "Int", 88, 10});				--Will of Unbinding
 table.insert(defaultbufftable, {"Soul Power","spellpower",1926 ,1});  		--Soul Casket
 table.insert(defaultbufftable, {"Witching Hour","Haste",1710 ,1});  		--Witching Hourglass
 table.insert(defaultbufftable, {"Jeweled Serpent","spellpower",1425 ,1}); 	--Figurine - Jeweled Serpent
 table.insert(defaultbufftable, {"Leviathan","spellpower",1425 ,1}); 		--Sea Star
-table.insert(defaultbufftable, {"Dire Magic","spellpower",2178 ,1});  		-- Bell of Enraging Resonance
-
+table.insert(defaultbufftable, {"Revelation", "Mastery", 2178 , 1});		--Theralion's Mirror
+table.insert(defaultbufftable, {"Dire Magic","spellpower",2178 ,1});  		--Bell of Enraging Resonance
+table.insert(defaultbufftable, {"Mark of the Firelord", "Int", 1277, 1});	--Rune of Zeth
 
 
 local defaultclbufftable = {}
@@ -150,6 +152,10 @@ function OptionsFrame_OnEvent(self, event, ...)
 			DEFAULT_CHAT_FRAME:AddMessage("SPDT Classic Default BuffList Loaded...");
 		end
 
+		if(not SPDTScale) then
+			SPDTScale= defaultSPDTpdtScale
+		end
+
 		ClassBuffList = defaultclbufftable;	--load the class list
 		
 		if(not HideAA) then
@@ -206,6 +212,9 @@ function OptionsFrame_OnEvent(self, event, ...)
 		
 		BuffListBoxUpdate();
 
+		SPDTScaleSlider:SetValue(SPDTScale)
+
+
 		DEFAULT_CHAT_FRAME:AddMessage("--- SPDT Classic Stat Weights Loaded ---");
 	elseif (event == "PLAYER_LOGOUT") then
 		HasteWeight = EditBoxHaste:GetNumber();
@@ -214,6 +223,7 @@ function OptionsFrame_OnEvent(self, event, ...)
 		DamageWeight = EditBoxDamage:GetNumber();
 		SpellpowerWeight = EditBoxSpellPower:GetNumber();
 		CooldownOffset = EditBoxCooldownOffset:GetNumber();
+		SPDTScale = SPDTScaleSlider:GetValue();
 		SetCheckBoxes()
 	end
 end
@@ -439,4 +449,90 @@ end
 
 function hideButtons() -- for the tickboxes to hide elements
 	SetCheckBoxes()
+end
+
+function moveSPDTButton_OnClick() -- options menu move button
+	UnlockSPDT()
+end
+
+function  resetSPDTButton_OnClick()
+	if InCombatLockdown() then 
+		print("\124cFFFF0000 Cannot reset position while in combat")
+		return 
+	end
+	ShadowPriestDoTTimerFrame:SetPoint("CENTER", 0, -70)
+
+end
+
+
+function SPDTScaleSlider_OnValueChanged(value)
+	setSPDTScale(value)
+end	
+
+function setSPDTScale(scale)
+	if InCombatLockdown() then
+		if not inCombatFlag then
+            print("\124cFFFF0000 Cannot change the scale while in combat")
+            inCombatFlag = true;  -- Set the flag so we don't print again during the same combat
+        end
+        SPDTScaleSlider:SetValue(SPDTScale)
+		return
+    end
+	 -- Proceed with updating the scale if we're out of combat
+	 applySPDTScale(scale)
+	 SPDTScaleSlider.ValueText:SetText(string.format("%d", math.floor(scale)))
+end
+
+function applySPDTScale(scale)
+	inCombatFlag = false;
+	if(scale == 1) then
+		SPDTScale = 1;
+		ShadowPriestDoTTimerFrame:SetScale(0.5);
+	elseif(scale == 2) then
+		SPDTScale = 2;
+		ShadowPriestDoTTimerFrame:SetScale(0.6);
+	elseif(scale == 3) then
+		SPDTScale = 3;
+		ShadowPriestDoTTimerFrame:SetScale(0.7);
+	elseif(scale == 4) then
+		SPDTScale = 4;
+		ShadowPriestDoTTimerFrame:SetScale(0.8);
+	elseif(scale == 5) then
+		SPDTScale = 5;
+		ShadowPriestDoTTimerFrame:SetScale(0.9);
+	elseif(scale == 6) then
+		SPDTScale = 6;
+		ShadowPriestDoTTimerFrame:SetScale(1.0);
+	elseif(scale == 7) then
+		SPDTScale = 7;
+		ShadowPriestDoTTimerFrame:SetScale(1.1);
+	elseif(scale == 8) then
+		SPDTScale = 8;
+		ShadowPriestDoTTimerFrame:SetScale(1.2);
+	elseif(scale == 9) then
+		SPDTScale = 9;
+		ShadowPriestDoTTimerFrame:SetScale(1.3);
+	elseif(scale == 10) then
+		SPDTScale = 10;
+		ShadowPriestDoTTimerFrame:SetScale(1.4);
+	elseif(scale == 11) then
+		SPDTScale = 11;
+		ShadowPriestDoTTimerFrame:SetScale(1.5);
+	else
+		print("\124cFFFF0000 Only a value of 1-11 is accepted. 6 is the default value") 
+	end
+
+	
+end
+
+-- Function to handle when the mouse enters the slider (show tooltip)
+function SPDTScaleSlider_OnEnter()
+    GameTooltip:SetOwner(SPDTScaleSlider, "ANCHOR_TOP")  -- Position the tooltip to the right of the slider
+    GameTooltip:SetText("Default value is 6")  
+    GameTooltip:Show()  
+end
+
+-- Function to handle when the mouse leaves the slider (hide tooltip)
+function SPDTScaleSlider_OnLeave()
+    GameTooltip:Hide()  
 end

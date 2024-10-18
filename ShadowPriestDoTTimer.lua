@@ -11,11 +11,10 @@ MyAddon_UpdateInterval = 0.05; -- How often the OnUpdate code will run (in secon
 
 WarningTime = 600; -- WarningTime (in milliseconds)
 local buffscorecurrent = 0
-
+local isincombat = false;
 
 --Used to keep track of the DoTs on a Mob.
 local moblist = {}
-local isincombat = false;
 local currentmob = nil;
 local maxmoblist = 10;
 
@@ -133,8 +132,7 @@ function ShadowPriestDoTTimerFrame_OnEvent(self, event, ...)
  		if (not ShadowPriestDoTTimerFrameScaleFrame) then
 			ShadowPriestDoTTimerFrameScaleFrame = 1.0
 		end
-		
-		SPDT_POPUP:Hide();
+	
 		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerFrameScaleFrame);
 		SetCooldownOffsets();
 		checkIfShadow();
@@ -600,6 +598,18 @@ local function SLASH_SHADOWPRIESTDOTTIMERhandler(msg, editbox)
 		ShadowPriestDoTTimerFrame:Show();
 	elseif  msg == 'hide' then
 		ShadowPriestDoTTimerFrame:Hide();
+	elseif msg == 'toggle' then  -- toggle visability 
+		if InCombatLockdown() then
+            print("\124cffff0000 You cannot toggle visibility while in combat!")  -- Prevent toggle in combat
+            return
+        end
+        if ShadowPriestDoTTimerFrame:IsShown() then
+            ShadowPriestDoTTimerFrame:Hide()   
+			print("\124cffffff00 SPDT is now hidden")
+        else
+            ShadowPriestDoTTimerFrame:Show()  
+			print("\124cffffff00 SPDT is now visible")
+        end
 	elseif  msg == 'reset' then
 		ShadowPriestDoTTimerFrame:Hide();
 		ShadowPriestDoTTimerFrame:Show();
@@ -607,56 +617,81 @@ local function SLASH_SHADOWPRIESTDOTTIMERhandler(msg, editbox)
 	elseif  msg == 'clear' then
 		ClearMobList();
 	elseif  msg == 'lock' then	
-		SPDT_POPUP:Hide();
-		ShadowPriestDoTTimerFrame:EnableMouse(false);
-		ShadowPriestDoTTimerFrame:SetBackdrop(nil);
-		SetCooldownOffsets();
-		STmode = 1
-	elseif  msg == 'move' then
-		SPDT_POPUP:Show();
-		ShadowPriestDoTTimerFrame:EnableMouse(true);
-		ShadowPriestDoTTimerFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile= "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 4, tile = false, tileSize =16, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
-		STmode = 2
+			print("\124cffffff00 Function removed, just press the lock button from the 'move' command")
+	elseif  msg == 'move' then  
+			UnlockSPDT();
 	elseif  msg == 'options' or msg =='' then
 		Settings.OpenToCategory("SPDT Classic")
-	elseif  msg == 'scale1' then
-		ShadowPriestDoTTimerScaleFrame = 0.5
-		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerScaleFrame);
-	elseif  msg == 'scale2' then
-		ShadowPriestDoTTimerScaleFrame = 0.6
-		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerScaleFrame);
-	elseif  msg == 'scale3' then
-		ShadowPriestDoTTimerScaleFrame = 0.7
-		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerScaleFrame);
-	elseif  msg == 'scale4' then
-		ShadowPriestDoTTimerScaleFrame = 0.8
-		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerScaleFrame);
-	elseif  msg == 'scale5' then
-		ShadowPriestDoTTimerScaleFrame = 0.9
-		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerScaleFrame);
-	elseif  msg == 'scale6' then
-		ShadowPriestDoTTimerScaleFrame = 1.0
-		ShadowPriestDoTTimerFrame:SetScale(ShadowPriestDoTTimerScaleFrame);
+
+	elseif msg:match("^scale (%d+)$") then  -- Match scale command with a number after it
+        local scaleValue = tonumber(msg:match("^scale (%d+)$"))  -- Extract the number after "scale"
+        setSPDTScale(scaleValue)  -- Call the setScale function with the extracted scale value
+
 	elseif  msg == 'help' then
-		print("Syntax: /spdt (show | hide | reset | move | lock | options | clearmoblist )");
-		print("Syntax: /spdt (scale1 | scale2 | scale3 | scale4 | scale5 | scale6)");
+		print("\124cffffff00 Syntax: /spdt (toggle | move | reset  | options | clearmoblist )");
+		print("\124cffffff00 Syntax: /spdt (scale [1-10])");
 	else
-		print("Syntax: /spdt (show | hide | reset | move | lock | options | clearmoblist )");
-		print("Syntax: /spdt (scale1 | scale2 | scale3 | scale4 | scale5 | scale6)");
+		print("\124cffffff00 Syntax: /spdt (toggle | move | reset  | options | clearmoblist )");
+		print("\124cffffff00 Syntax: /spdt (scale [1-10])");
 	end
 end
 
 SlashCmdList["SHADOWPRIESTDOTTIMER"] = SLASH_SHADOWPRIESTDOTTIMERhandler;
 
+function UnlockSPDT()
+	if not InCombatLockdown() then 
+		SettingsPanel:Hide()
+		--the popup
+		StaticPopupDialogs["SPDT_Move_Window"] = {
+			text = "\124cffffff00 Press Lock to stop moving SPDT",
+			button1 = "Lock",
+			OnAccept = function (self)
+				lockSPDT()
+			end,
+			timeout = 0,	
+			whileDead = true,
+			hideOnEscape = false,
+		}
+
+		StaticPopup_Show("SPDT_Move_Window")
+		StaticPopup1:SetMovable(true)
+		StaticPopup1:EnableMouse(true)
+		StaticPopup1:RegisterForDrag("LeftButton")
+		StaticPopup1:SetScript("OnDragStart", StaticPopup1.StartMoving)
+		StaticPopup1:SetScript("OnDragStop", StaticPopup1.StopMovingOrSizing)
+
+		--the main window
+		ShadowPriestDoTTimerFrame:EnableMouse(true);
+		ShadowPriestDoTTimerFrame:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background", edgeFile= "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 4, tile = false, tileSize =16, insets = { left = 0, right = 0, top = 0, bottom = 0 }});
+		STmode = 2
+	else
+		print("|cffffff00 Cannot move SPDT while in combat.")
+		print("|cffffff00 Will unlock once combat ends")
+		   -- Register for the PLAYER_REGEN_ENABLED event to know when combat ends
+		   local SPDThiddenFrame = CreateFrame("Frame")
+		   SPDThiddenFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	
+		   -- event handler to call UnlockSPDT again after combat ends
+		   SPDThiddenFrame:SetScript("OnEvent", function(self, event)
+			   if event == "PLAYER_REGEN_ENABLED" then
+				   UnlockSPDT()
+				   self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+			   end
+		   end)
+
+	end
+end
+
 function lockSPDT()
 	ShadowPriestDoTTimerFrame:EnableMouse(false);
 	ShadowPriestDoTTimerFrame:SetBackdrop(nil);
 	SetCooldownOffsets();
-	SPDT_POPUP:Hide();
 	STmode = 1
+	StaticPopup1:SetMovable(false)
+	StaticPopup1:EnableMouse(false)
+	StaticPopup1:SetScript("OnDragStart", nil)
+	StaticPopup1:SetScript("OnDragStop", nil)
 end
-
-
 
 
 
