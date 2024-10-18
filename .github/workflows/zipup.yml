@@ -6,10 +6,12 @@ on:
     tags:
       - '*'
     
-    paths-ignore:
-      - '.github/**'
-      - 'assets/**'
-      - '**.md"'
+    paths:
+      - '!.github/**'
+      - '!assets/**'
+      - '!**.md"'
+      - '**.lua"'
+      - '**.xml"'
 # a workflow is built up as jobs, and within these jobs are steps
 jobs:
   build:
