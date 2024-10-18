@@ -22,3 +22,5 @@ jobs:
 
       - name: Package
         uses: BigWigsMods/packager@master
+        env:
+            GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
