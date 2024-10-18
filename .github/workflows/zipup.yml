@@ -5,10 +5,11 @@ on:
   push:
     tags:
       - '*'
+    
     paths-ignore:
       - '.github/**'
-      - 'assets/*'
-      - 'README.md'
+      - 'assets/**'
+      - '**.md"'
 # a workflow is built up as jobs, and within these jobs are steps
 jobs:
   build:
