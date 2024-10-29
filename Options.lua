@@ -360,7 +360,7 @@ end
 function SPDTPawnButton_OnClick()
 	StaticPopupDialogs["SPDT_Pawn_EP_import"] = {
 
-		text = "Please enter pawn string \n |cFFFF0000NOTE: default stats are perfectly fine to use",
+		text = "Please enter pawn string \n |cFFFF0000NOTE: Might not work correctly \ndefault stats are perfectly fine to use",
 		button1 = "Accept",
 		button2 = "Cancel",
 		hasEditBox = true,
